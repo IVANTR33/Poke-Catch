@@ -1,8 +1,8 @@
 // commands.js
 
-
 const { pickRandom } = require('./utils');
 const { config, spamMessages, pokemonList, configPath } = require('./config');
+const { globalState } = require('./pokemonHandler'); // Importa la variable desde aquí
 const fs = require('fs');
 let currentPage = 1;
 let client = null;
@@ -65,8 +65,6 @@ function handleCommand(message, prefix) {
             if (pokemonList.includes(pokemonToAdd)) return message.reply(`ℹ️ ${pokemonToAdd} ya está en la lista.`);
             pokemonList.push(pokemonToAdd);
             // Guardar en archivo
-            const { pokemonListPath } = require('./config');
-            const fs = require('fs');
             fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
             message.reply(`✅ ${pokemonToAdd} añadido. Total: ${pokemonList.length}`);
             break;
@@ -78,24 +76,17 @@ function handleCommand(message, prefix) {
             if (index === -1) return message.reply(`ℹ️ ${pokemonToRemove} no está en la lista.`);
             pokemonList.splice(index, 1);
             // Guardar en archivo
-            const { pokemonListPath } = require('./config');
-            const fs = require('fs');
             fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
             message.reply(`✅ ${pokemonToRemove} eliminado. Total: ${pokemonList.length}`);
             break;
         }
         case 'catchall': {
-            if (!args.length) return message.reply(`ℹ️ Modo Catch-all actual: ${config.catchAll ? 'ON' : 'OFF'}`);
+            if (!args.length) return message.reply(`ℹ️ Modo Catch-all actual: ${globalState.catchAll ? 'ON' : 'OFF'}`);
             const newValue = args[0].toLowerCase() === 'on';
             config.catchAll = newValue;
-            // Sincronizar con globalState si existe (para que el handler lo respete de inmediato)
-            if (global.globalState) global.globalState.catchAll = newValue;
-            if (globalThis.globalState) globalThis.globalState.catchAll = newValue;
-            // Guardar en config.json para persistencia
-            const { configPath } = require('./config');
-            const fs = require('fs');
+            globalState.catchAll = newValue;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-            message.reply(`✅ Modo Catch-all ${config.catchAll ? 'activado' : 'desactivado'}`);
+            message.reply(`✅ Modo Catch-all ${newValue ? 'activado' : 'desactivado'}`);
             break;
         }
         case 'list':
@@ -153,9 +144,7 @@ function handleCommand(message, prefix) {
         }
         case 'resume': {
             config.paused = false;
-            // Sincronizar con globalState para reanudar catcher y spam en tiempo real
-            if (global.globalState) global.globalState.paused = false;
-            if (globalThis.globalState) globalThis.globalState.paused = false;
+            globalState.paused = false;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
             message.reply('✅ Sistema reanudado.');
             break;
@@ -286,13 +275,13 @@ function handleCommand(message, prefix) {
                 "♻ **COMANDO MIRROR**",
                 "`!c <texto>` → Escribirá lo que tu escribas en el comando",
                 "",
-                "� **COMANDO POKETWO**",
+                " **COMANDO POKETWO**",
                 "`!p <comando>` → Envía un comando a Pokétwo mencionándolo automáticamente. Ejemplo: `!p pokedex` enviará `@poketwo pokedex`."
             ].join('\n');
 
             const helpMsg2 = [
                 "",
-                "�📌 **EJEMPLOS**",
+                "📌 **EJEMPLOS**",
                 "• `!add \"Roaring Moon\"` → Nombres compuestos",
                 "• `!next 3` → Salta a página 3",
                 "• `!c @poketwo pf old` → muestra el perfil ",
@@ -304,7 +293,7 @@ function handleCommand(message, prefix) {
                 "• `!p pokedex` → Envía `@poketwo pokedex` al canal",
                 "",
                 '🔸 **Consejo:** Usa comillas "alolan raichu" para nombres con espacios',
-                "🛠️ **Soporte:** Contacta al desarrollador  https://github.com/IVANTR33"
+                "🛠️ **Soporte:** Contacta al desarrollador  https://github.com/IVANTR33"
             ].join('\n');
 
             message.reply(helpMsg1);
