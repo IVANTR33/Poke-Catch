@@ -34,12 +34,13 @@ function extractPokemonName(content) {
         .replace(/❨.*?❩/g, '')
         .replace(/⦗.*?⦘/g, '')
         .replace(/\(\)/g,'')
-        .replace(/<a?:.+?:\d+>/g, '')
+        .replace(/<a?:.+?:\d+>/g, '') // Corregido: Elimina emojis de Discord
         .replace(/[\u{1F600}-\u{1F6FF}]/gu, '')
         .replace(/\*\*/g, '')
         .replace(/гҖҗ.*?гҖ‘/g, '')
         .replace(/<:_:\d+>/g, '')
         .replace(/:flag_[a-z]{2}:/g, '')
+        .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '')
         .replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ\s.'-]/g, '')
         .trim();
     const patterns = [
