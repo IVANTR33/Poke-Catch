@@ -2,12 +2,12 @@
   "TOKEN": "TU_TOKEN_AQUI",  
 
   "OwnerIDs": ["EL_ID_Aqui"], 
-//================================
+
   "POKETWO_ID": "716390085896962058",
   "nameBots": ["874910942490677270","854233015475109888"], 
   "spamChannel": "", 
   "logChannel": "",
-//================================
+
   "settings": {
     "maxAttempts": 4,
     "reactionTime": 1500,
@@ -17,7 +17,7 @@
     "spamMinDelay": 1500,
     "spamMaxDelay": 3000
   },
-//================================
+
   "catchAll": false,
   "spamming": false,
   "errorChannel": ""
