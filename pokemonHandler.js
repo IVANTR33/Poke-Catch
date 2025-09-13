@@ -1,6 +1,5 @@
 // pokemonHandler.js
 
-
 const { config, pokemonList, pokemonListPath } = require('./config');
 const { reportError } = require('./utils');
 const { solveHint } = require('pokehint');
@@ -305,5 +304,6 @@ function handlePokemonMessage(message) {
 }
 
 module.exports = {
-    handlePokemonMessage
+    handlePokemonMessage,
+    globalState // Exporta globalState para que pueda ser importada
 };
