@@ -9,7 +9,7 @@
 
   "settings": {
     "maxAttempts": 4,
-    "reactionTime": 1500,
+    "reactionTime": 2500,
     "channelTimeout": 35000,
     "itemsPerPage": 25,
     "nameWaitTime": 10000,
