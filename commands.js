@@ -304,7 +304,7 @@ function handleCommand(message, prefix) {
                 "• `!p pokedex` → Envía `@poketwo pokedex` al canal",
                 "",
                 '🔸 **Consejo:** Usa comillas "alolan raichu" para nombres con espacios',
-                "🛠️ **Soporte:** Contacta al desarrollador  Ivantree9096"
+                "🛠️ **Soporte:** Contacta al desarrollador  https://github.com/IVANTR33"
             ].join('\n');
 
             message.reply(helpMsg1);
