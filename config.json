@@ -1,15 +1,13 @@
 {
-  "TOKEN": "TU_TOKEN_AQUI",
-  "OwnerIDs": [
-    "EL_ID_DE_LA_CUENTA_PRINCIPAL"
-  ],
-  "POKETWO_ID": "716390085896962058",
-  "nameBots": [
-    "874910942490677270",
-    "854233015475109888"
-  ],
-  "spamChannel": "",
-  "logChannel": "",
+  "TOKEN": "TU_TOKEN_AQUI", //dentro de las comillas debes poner el token de tu cuenta 
+
+  "OwnerIDs": ["EL_ID_Aqui"], //puedes agregar varios ID usando este formato ["1234567890","1234567890"],
+//================================
+  "POKETWO_ID": "716390085896962058", // Id de pokettwo no borrar
+  "nameBots": ["874910942490677270","854233015475109888"], // por_defecto_dejo_cargado_el_ID_de_Poke-name_&_P2assistant
+  "spamChannel": "", //este campo se rellena desde discord, no es necesario hacerlo aqui 
+  "logChannel": "",//este campo se rellena desde discord, no es necesario hacerlo aqui 
+//================================
   "settings": {
     "maxAttempts": 4,
     "reactionTime": 1500,
@@ -19,7 +17,8 @@
     "spamMinDelay": 1500,
     "spamMaxDelay": 3000
   },
+//================================
   "catchAll": false,
   "spamming": false,
-  "errorChannel": ""
+  "errorChannel": ""//este campo se rellena desde discord, no es necesario hacerlo aqui 
 }
