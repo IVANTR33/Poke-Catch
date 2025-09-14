@@ -13,8 +13,7 @@ let globalState = {
 };
 const channelStates = new Map();
 
-// Normaliza el nombre de un Pokémon para una comparación consistente.
-// Elimina acentos, caracteres especiales, convierte a minúsculas y quita espacios extra.
+// Normaliza el nombre de un Pokémon para una comparación consistente.                   // Elimina acentos, caracteres especiales, convierte a minúsculas y quita espacios extra.
 function normalizeName(name) {
     return name
         .toLowerCase()
@@ -30,10 +29,11 @@ function extractPokemonName(content) {
     let cleanContent = content
         // Elimina el prefijo "Poké-Name APP:"
         .replace(/^(Poké-Name APP:)\s*/i, '')
+        // Elimina los porcentajes y números (ej: ": 98.349%")
+        .replace(/:\s*\d{1,3}\.\d+%/g, '')
         // Elimina el texto entre corchetes, como [Anopth]
         .replace(/\[.*?\]/g, '')
-        // Elimina el texto entre paréntesis
-        .replace(/\(.*?\)/g, '')
+        // Elimina el texto entre paréntesis                                                     .replace(/\(.*?\)/g, '')
         // Elimina otros tipos de llaves
         .replace(/【.*?】/g, '')
         .replace(/〈.*?〉/g, '')
@@ -52,15 +52,14 @@ function extractPokemonName(content) {
         // Reemplaza múltiples espacios con uno solo
         .replace(/\s+/g, ' ')
         .trim();
-    
+
     // Si el nombre queda vacío después de la limpieza, devolvemos null
     if (!cleanContent) return null;
 
     // Patrones para encontrar el nombre del Pokémon
     const patterns = [
         /The pokémon is (.+)/i,
-        /Possible Pokémon: ([^,\n]+)/i,
-        /^([^гҖҗ\[]+)/,
+        /Possible Pokémon: ([^,\n]+)/i,                                                          /^([^гҖҗ\[]+)/,
         /^(\d+\)\s*)?([^(]+)/,
         /([a-zA-ZÁÉÍÓÚáéíóúÑñ][a-zA-ZÁÉÍÓÚáéíóúÑñ\s.'-]+)/
     ];
@@ -81,8 +80,7 @@ function getChannelState(channelId) {
     if (!channelStates.has(channelId)) {
         channelStates.set(channelId, {
             lastSpawn: 0,
-            pokemon: null,
-            attempts: 0,
+            pokemon: null,                                                                           attempts: 0,
             waitingForName: false,
             failedNames: new Set()
         });
@@ -92,8 +90,7 @@ function getChannelState(channelId) {
 
 // Envía un mensaje de log con los detalles de la captura.
 async function sendLog(pokemonName, channelId, captureMessage) {
-    if (!config.logChannel) return;
-    try {
+    if (!config.logChannel) return;                                                          try {
         const channel = await globalThis.client.channels.fetch(config.logChannel);
         if (!channel) return;
 
@@ -166,7 +163,7 @@ async function sendLog(pokemonName, channelId, captureMessage) {
 async function handlePokemonMessage(message) {
     if (globalState.paused) return;
     if (message.author.bot && message.author.id !== config.POKETWO_ID && !config.nameBots.includes(message.author.id)) return;
-    
+
     let localPokemonList = [];
     try {
         localPokemonList = JSON.parse(fs.readFileSync(path.join(__dirname, 'pokemon_list.json'), 'utf8'));
