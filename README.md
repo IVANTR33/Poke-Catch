@@ -19,7 +19,7 @@ Registro de Capturas Detallado: Cada Pokémon capturado se registra en un canal 
 
 Flexibilidad de Captura: Puede configurar el bot para atrapar todos los Pokémon o solo los que estén en una lista específica.
 
-Comandos de Control: Use comandos de chat como !c <nombre> para manipular el bot. tambien puede usar el comando !trade para reaccionar a botones como ( Accept , Reject, Yes, Yes nuy XP blocker ) etc.
+Comandos de Control: Use comandos de chat como !c <nombre> para manipular el bot. tambien puede usar el comando !trade para reaccionar a botones como ( Accept , Reject, Yes, Yes buy XP blocker ) etc.
 
 Código Abierto: El código es completamente transparente y está disponible en este repositorio. Puedes revisarlo.
 
