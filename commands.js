@@ -1,7 +1,6 @@
 // commands.js
 
 const { pickRandom } = require('./utils');
-// Importa el estado global de pokemonHandler para poder modificarlo
 const { globalState } = require('./pokemonHandler');
 const { config, spamMessages, pokemonList, configPath } = require('./config');
 const fs = require('fs');
@@ -65,7 +64,6 @@ function handleCommand(message, prefix) {
             const pokemonToAdd = formatPokemonName(args.join(' '));
             if (pokemonList.includes(pokemonToAdd)) return message.reply(`ℹ️ ${pokemonToAdd} ya está en la lista.`);
             pokemonList.push(pokemonToAdd);
-            // Guardar en archivo
             const { pokemonListPath } = require('./config');
             const fs = require('fs');
             fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
@@ -78,7 +76,6 @@ function handleCommand(message, prefix) {
             const index = pokemonList.indexOf(pokemonToRemove);
             if (index === -1) return message.reply(`ℹ️ ${pokemonToRemove} no está en la lista.`);
             pokemonList.splice(index, 1);
-            // Guardar en archivo
             const { pokemonListPath } = require('./config');
             const fs = require('fs');
             fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
@@ -88,14 +85,9 @@ function handleCommand(message, prefix) {
         case 'catchall': {
             if (!args.length) return message.reply(`ℹ️ Modo Catch-all actual: ${globalState.catchAll ? 'ON' : 'OFF'}`);
             const newValue = args[0].toLowerCase() === 'on';
-            
-            // Actualiza el estado global directamente
             globalState.catchAll = newValue;
-            
-            // Guarda el cambio en config.json para la próxima vez
             config.catchAll = newValue;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-            
             message.reply(`✅ Modo Catch-all ${globalState.catchAll ? 'activado' : 'desactivado'}`);
             break;
         }
@@ -120,18 +112,15 @@ function handleCommand(message, prefix) {
             const subCommand = args[0].toLowerCase();
             if (subCommand === 'on') {
                 config.spamming = true;
-                // Sincroniza el estado global de spam
                 globalState.spamming = true;
                 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
                 message.reply('✅ Spam activado');
             } else if (subCommand === 'off') {
                 config.spamming = false;
-                // Sincroniza el estado global de spam
                 globalState.spamming = false;
                 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
                 message.reply('✅ Spam detenido');
             } else {
-                // Extraer el ID del canal de la mención
                 const channelMention = message.mentions.channels.first();
                 if (!channelMention) {
                     return message.reply('❌ Debes mencionar un canal válido. Ejemplo: `!spam #canal`');
@@ -158,10 +147,10 @@ function handleCommand(message, prefix) {
         }
         case 'resume': {
             config.paused = false;
-            // Sincroniza el estado global de pausa
             globalState.paused = false;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
             message.reply('✅ Sistema reanudado.');
+            console.log("[INFO] El bot se ha reanudado. Captura de Pokémon activada.");
             break;
         }
         case 'trade': {
@@ -171,7 +160,6 @@ function handleCommand(message, prefix) {
                 const poketwoMessages = fetched.filter(m => m.author.id === config.POKETWO_ID && m.components && m.components.length > 0).first(5);
                 if (!poketwoMessages.length) return message.reply('❌ No se encontraron mensajes recientes de Pokétwo con botones.');
 
-                // Si el argumento es un número, hace click en el botón correspondiente del mensaje más reciente
                 if (args.length === 1 && !isNaN(args[0])) {
                     const idx = parseInt(args[0], 10) - 1;
                     const mostRecentMsg = poketwoMessages[0];
@@ -190,7 +178,6 @@ function handleCommand(message, prefix) {
                     return;
                 }
 
-                // Si el argumento es un texto, busca el botón más reciente que coincida
                 if (args.length) {
                     const buttonLabel = args.join(' ').toLowerCase();
                     let found = null;
@@ -215,7 +202,6 @@ function handleCommand(message, prefix) {
                     return;
                 }
 
-                // Si no hay argumentos, muestra la lista de todos los botones disponibles
                 let allButtons = [];
                 poketwoMessages.forEach((msg) => {
                     msg.components.forEach(row => {
