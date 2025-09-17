@@ -1,8 +1,9 @@
 // commands.js
 
 const { pickRandom } = require('./utils');
+// Importa el estado global de pokemonHandler para poder modificarlo
+const { globalState } = require('./pokemonHandler');
 const { config, spamMessages, pokemonList, configPath } = require('./config');
-const { globalState } = require('./pokemonHandler'); // Importa la variable desde aquí
 const fs = require('fs');
 let currentPage = 1;
 let client = null;
@@ -65,6 +66,8 @@ function handleCommand(message, prefix) {
             if (pokemonList.includes(pokemonToAdd)) return message.reply(`ℹ️ ${pokemonToAdd} ya está en la lista.`);
             pokemonList.push(pokemonToAdd);
             // Guardar en archivo
+            const { pokemonListPath } = require('./config');
+            const fs = require('fs');
             fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
             message.reply(`✅ ${pokemonToAdd} añadido. Total: ${pokemonList.length}`);
             break;
@@ -76,6 +79,8 @@ function handleCommand(message, prefix) {
             if (index === -1) return message.reply(`ℹ️ ${pokemonToRemove} no está en la lista.`);
             pokemonList.splice(index, 1);
             // Guardar en archivo
+            const { pokemonListPath } = require('./config');
+            const fs = require('fs');
             fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
             message.reply(`✅ ${pokemonToRemove} eliminado. Total: ${pokemonList.length}`);
             break;
@@ -83,10 +88,15 @@ function handleCommand(message, prefix) {
         case 'catchall': {
             if (!args.length) return message.reply(`ℹ️ Modo Catch-all actual: ${globalState.catchAll ? 'ON' : 'OFF'}`);
             const newValue = args[0].toLowerCase() === 'on';
-            config.catchAll = newValue;
+            
+            // Actualiza el estado global directamente
             globalState.catchAll = newValue;
+            
+            // Guarda el cambio en config.json para la próxima vez
+            config.catchAll = newValue;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-            message.reply(`✅ Modo Catch-all ${newValue ? 'activado' : 'desactivado'}`);
+            
+            message.reply(`✅ Modo Catch-all ${globalState.catchAll ? 'activado' : 'desactivado'}`);
             break;
         }
         case 'list':
@@ -110,10 +120,14 @@ function handleCommand(message, prefix) {
             const subCommand = args[0].toLowerCase();
             if (subCommand === 'on') {
                 config.spamming = true;
+                // Sincroniza el estado global de spam
+                globalState.spamming = true;
                 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
                 message.reply('✅ Spam activado');
             } else if (subCommand === 'off') {
                 config.spamming = false;
+                // Sincroniza el estado global de spam
+                globalState.spamming = false;
                 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
                 message.reply('✅ Spam detenido');
             } else {
@@ -144,6 +158,7 @@ function handleCommand(message, prefix) {
         }
         case 'resume': {
             config.paused = false;
+            // Sincroniza el estado global de pausa
             globalState.paused = false;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
             message.reply('✅ Sistema reanudado.');
@@ -293,7 +308,7 @@ function handleCommand(message, prefix) {
                 "• `!p pokedex` → Envía `@poketwo pokedex` al canal",
                 "",
                 '🔸 **Consejo:** Usa comillas "alolan raichu" para nombres con espacios',
-                "🛠️ **Soporte:** Contacta al desarrollador  https://github.com/IVANTR33"
+                "🛠️ **Soporte:** Contacta al desarrollador  Ivantree9096"
             ].join('\n');
 
             message.reply(helpMsg1);
