@@ -3,13 +3,8 @@ const Discord = require("discord.js-selfbot-v13");
 const { config, spamMessages, pokemonList } = require("./config");
 const { getRandomInt, pickRandom } = require("./utils");
 const { handleCommand, setupCommands } = require("./commands");
-const { handlePokemonMessage } = require("./pokemonHandler");
+const { handlePokemonMessage, globalState } = require("./pokemonHandler");
 
-const globalState = {
-    paused: false,
-    catchAll: config.catchAll,
-    spamming: config.spamming
-};
 // --- SISTEMA DE SPAM AUTOMÁTICO ---
 let spamInterval = null;
 async function startSpam(client) {
@@ -67,23 +62,23 @@ client.on("ready", () => {
 
     console.log(`
 ╔════════════════════════════════════════════╗
-║   🟢 ${client.user.tag} CONECTADO.           
+║   🟢 ${client.user.tag} CONECTADO.
 ╠════════════════════════════════════════════╣
-║   📊 ESTADÍSTICAS:                                           
-║   🗄️ Servidores: ${totalGuilds.toString().padEnd(15)}         
-║   📺 Canales: ${totalChannels.toString().padEnd(16)}          
-║   ⌚ Hora de inicio: ${botUptime.padEnd(14)}                 
+║   📊 ESTADÍSTICAS:
+║   🗄️ Servidores: ${totalGuilds.toString().padEnd(15)}
+║   📺 Canales: ${totalChannels.toString().padEnd(16)}
+║   ⌚ Hora de inicio: ${botUptime.padEnd(14)}
 ╠════════════════════════════════════════════╣
 ║   ⚙️ CONFIGURACIÓN:
-║   🎯 Catch-all: ${globalState.catchAll ? 'ON'.padEnd(19) : 'OFF'.padEnd(18)} 
-║   📝 Lista de Nombres: ${pokemonList.length.toString().padEnd(10)} 
-║   📬 Canal de spam: ${config.spamChannel ? 'Configurado'.padEnd(12) : 'No configurado'.padEnd(12)} 
-║   🗒️ Canal de log: ${config.logChannel ? 'Configurado'.padEnd(14) : 'No configurado'.padEnd(14)} 
+║   🎯 Catch-all: ${globalState.catchAll ? 'ON'.padEnd(19) : 'OFF'.padEnd(18)}
+║   📝 Lista de Nombres: ${pokemonList.length.toString().padEnd(10)}
+║   📬 Canal de spam: ${config.spamChannel ? 'Configurado'.padEnd(12) : 'No configurado'.padEnd(12)}
+║   🗒️ Canal de log: ${config.logChannel ? 'Configurado'.padEnd(14) : 'No configurado'.padEnd(14)}
 ║   🛑 Canal de error: ${config.errorChannel ? 'Configurado'.padEnd(12) : 'No configurado'.padEnd(12)}
-║   📩 Spam: ${globalState.spamming ? 'ACTIVO'.padEnd(19) : 'INACTIVO'.padEnd(18)} 
+║   📩 Spam: ${globalState.spamming ? 'ACTIVO'.padEnd(19) : 'INACTIVO'.padEnd(18)}
 ╠════════════════════════════════════════════╣
 ║   ℹ️ Auto-Catcher v2.0 -  Catch Pokemon
-║   🔹 Tipo: Selfbot lista personalizada 
+║   🔹 Tipo: Selfbot lista personalizada
 ║   🔹 Delay configurado: ${config.settings.reactionTime}ms
 ╚════════════════════════════════════════════╝
     `);
