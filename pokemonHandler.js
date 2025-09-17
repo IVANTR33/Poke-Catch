@@ -13,7 +13,7 @@ let globalState = {
 };
 const channelStates = new Map();
 
-// Normaliza el nombre de un Pokémon para una comparación consistente.                   // Elimina acentos, caracteres especiales, convierte a minúsculas y quita espacios extra.
+// Normaliza el nombre de un Pokémon para una comparación consistente.
 function normalizeName(name) {
     return name
         .toLowerCase()
