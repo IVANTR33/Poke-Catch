@@ -5,7 +5,6 @@ const { solveHint } = require('pokehint');
 const fs = require('fs');
 const path = require('path');
 
-// Carga la configuración de forma dinámica para poder recargarla
 let config = require('./config').config;
 let pokemonList = require('./config').pokemonList;
 let pokemonListPath = require('./config').pokemonListPath;
@@ -17,7 +16,6 @@ let globalState = {
 };
 const channelStates = new Map();
 
-// Normaliza el nombre de un Pokémon para una comparación consistente.
 function normalizeName(name) {
     return name
         .toLowerCase()
@@ -28,40 +26,28 @@ function normalizeName(name) {
         .trim();
 }
 
-// Extrae y limpia el nombre de un Pokémon de un mensaje.
 function extractPokemonName(content) {
     let cleanContent = content
-        // Elimina el prefijo "Poké-Name APP:"
         .replace(/^(Poké-Name APP:)\s*/i, '')
-        // Elimina los porcentajes y números (ej: ": 98.349%")
         .replace(/:\s*\d{1,3}\.\d+%/g, '')
-        // Elimina el texto entre corchetes, como [Anopth]
         .replace(/\[.*?\]/g, '')
-        // Elimina el texto entre paréntesis
         .replace(/\(.*?\)/g, '')
-        // Elimina otros tipos de llaves
         .replace(/【.*?】/g, '')
         .replace(/〈.*?〉/g, '')
         .replace(/❨.*?❩/g, '')
         .replace(/⦗.*?⦘/g, '')
-        // Elimina emojis de Discord personalizados y animados
         .replace(/<a?:.+?:\d+>/g, '')
-        // Elimina emojis Unicode estándar
         .replace(/[\u{1F600}-\u{1F6FF}]/gu, '')
         .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '')
-        // Elimina otros caracteres que causan problemas
         .replace(/\*\*/g, '')
         .replace(/гҖҗ.*?гҖ‘/g, '')
         .replace(/<:_:\d+>/g, '')
         .replace(/:flag_[a-z]{2}:/g, '')
-        // Reemplaza múltiples espacios con uno solo
         .replace(/\s+/g, ' ')
         .trim();
 
-    // Si el nombre queda vacío después de la limpieza, devolvemos null
     if (!cleanContent) return null;
 
-    // Patrones para encontrar el nombre del Pokémon
     const patterns = [
         /The pokémon is (.+)/i,
         /Possible Pokémon: ([^,\n]+)/i,
@@ -74,14 +60,12 @@ function extractPokemonName(content) {
         const match = cleanContent.match(pattern);
         if (match && match[1]) {
             const rawName = match[1].replace(/_/g, ' ').trim();
-            // Limpia cualquier número o # que quede al inicio
             return rawName.replace(/^[\d#\s]+/, '').trim();
         }
     }
     return cleanContent || null;
 }
 
-// Obtiene el estado del canal. Si no existe, lo crea.
 function getChannelState(channelId) {
     if (!channelStates.has(channelId)) {
         channelStates.set(channelId, {
@@ -95,7 +79,6 @@ function getChannelState(channelId) {
     return channelStates.get(channelId);
 }
 
-// Envía un mensaje de log con los detalles de la captura.
 async function sendLog(pokemonName, channelId, captureMessage) {
     if (!config.logChannel) return;
     try {
@@ -167,7 +150,6 @@ async function sendLog(pokemonName, channelId, captureMessage) {
     }
 }
 
-// Lógica principal del bot para manejar los mensajes de Pokémon.
 async function handlePokemonMessage(message) {
     if (globalState.paused) return;
     if (message.author.bot && message.author.id !== config.POKETWO_ID && !config.nameBots.includes(message.author.id)) return;
@@ -181,7 +163,6 @@ async function handlePokemonMessage(message) {
     const channelId = message.channel.id;
     const state = getChannelState(channelId);
 
-    // 1. DETECCIÓN DE APARICIÓN
     if (message.author.id === config.POKETWO_ID &&
         (message.content.includes("A wild pokémon has appeared!") ||
          message.embeds.some(e => e.description?.includes("Guess the pokémon")))) {
@@ -201,7 +182,6 @@ async function handlePokemonMessage(message) {
         return;
     }
 
-    // 2. PROCESAR NOMBRE DE POKE-NAME
     if (config.nameBots.includes(message.author.id) && state.waitingForName) {
         const name = extractPokemonName(message.content);
         if (!name) {
@@ -227,18 +207,27 @@ async function handlePokemonMessage(message) {
             state.waitingForName = false;
             return;
         }
-        console.log(`[${channelId}] 🟢 Coincidencia Detectada`);
+        // Cambio aquí: el mensaje de 'Coincidencia Detectada' solo se muestra si catchall NO está activo
+        if (!globalState.catchAll) {
+            console.log(`[${channelId}] 🟢 Coincidencia Detectada`);
+        }
         state.pokemon = normalizedName;
         state.attempts = 1;
         state.waitingForName = false;
         setTimeout(async () => {
-            console.log(`[${channelId}] 🎣 Capturando ${normalizedName}`);
-            await message.channel.send(`<@${config.POKETWO_ID}> c ${normalizedName}`);
+            try {
+                console.log(`[${channelId}] 🎣 Capturando ${normalizedName}`);
+                await message.channel.send(`<@${config.POKETWO_ID}> c ${normalizedName}`);
+            } catch (error) {
+                console.error(`[${channelId}] ❌ Error al enviar mensaje de captura: ${error.message}`);
+                await reportError(`Error de permisos al capturar. Canal: <#${channelId}>. Asegúrate de que el bot tenga permiso para enviar mensajes en ese canal.`,
+                    globalThis.client, config);
+                state.pokemon = null;
+            }
         }, config.settings.reactionTime);
         return;
     }
 
-    // 3. MANEJO DE ERRORES
     if (message.author.id === config.POKETWO_ID && message.content.includes("That is the wrong pokémon!")) {
         if (!state.pokemon) return;
         console.log(`[${channelId}] ❌ Captura fallida <${state.pokemon}>`);
@@ -247,8 +236,15 @@ async function handlePokemonMessage(message) {
             state.attempts++;
             state.pokemon = null;
             setTimeout(async () => {
-                console.log(`[${channelId}] 📝 Solicitando nueva pista...`);
-                await message.channel.send(`<@${config.POKETWO_ID}> h`);
+                try {
+                    console.log(`[${channelId}] 📝 Solicitando nueva pista...`);
+                    await message.channel.send(`<@${config.POKETWO_ID}> h`);
+                } catch (error) {
+                    console.error(`[${channelId}] ❌ Error al solicitar pista: ${error.message}`);
+                    await reportError(`Error de permisos al solicitar pista. Canal: <#${channelId}>. Asegúrate de que el bot tenga permiso para enviar mensajes en ese canal.`,
+                        globalThis.client, config);
+                    state.pokemon = null;
+                }
             }, config.settings.reactionTime);
         } else {
             console.log(`[${channelId}] 🛑 Límite de intentos alcanzado`);
@@ -258,7 +254,6 @@ async function handlePokemonMessage(message) {
         return;
     }
 
-    // 4. RESOLUCIÓN DE HINTS
     if (message.author.id === config.POKETWO_ID && message.content.includes("The pokémon is")) {
         if (state.pokemon) return;
         const [pokemonName] = await solveHint(message);
@@ -280,17 +275,25 @@ async function handlePokemonMessage(message) {
             console.log(`[${channelId}] ⚠️ ${normalizedName} falló en este spawn, ignorando...`);
             return;
         }
-        console.log(`[${channelId}] 📗 Coincidencia en lista (Hint)`);
+        if (!globalState.catchAll) {
+            console.log(`[${channelId}] 📗 Coincidencia en lista (Hint)`);
+        }
         state.pokemon = normalizedName;
         state.attempts++;
         setTimeout(async () => {
-            console.log(`[${channelId}] 🎣 Capturando desde hint: ${normalizedName}`);
-            await message.channel.send(`<@${config.POKETWO_ID}> c ${normalizedName}`);
+            try {
+                console.log(`[${channelId}] 🎣 Capturando desde hint: ${normalizedName}`);
+                await message.channel.send(`<@${config.POKETWO_ID}> c ${normalizedName}`);
+            } catch (error) {
+                console.error(`[${channelId}] ❌ Error al enviar mensaje de captura desde hint: ${error.message}`);
+                await reportError(`Error de permisos al capturar (hint). Canal: <#${channelId}>. Asegúrate de que el bot tenga permiso para enviar mensajes.`,
+                    globalThis.client, config);
+                state.pokemon = null;
+            }
         }, config.settings.reactionTime);
         return;
     }
 
-    // 5. CAPTURA EXITOSA
     if (message.author.id === config.POKETWO_ID &&
         (message.content.includes("Congratulations") || message.content.includes("You caught a"))) {
         if (!state.pokemon) return;
@@ -301,7 +304,6 @@ async function handlePokemonMessage(message) {
         state.attempts = 0;
     }
 
-    // 6. DETECCIÓN DE CAPTCHA
     const CAPTCHA_TRIGGERS = [
         "Whoa there. Please tell us you're human!",
         "https://verifypoketwo.net/captcha/",
@@ -320,7 +322,8 @@ async function handlePokemonMessage(message) {
                     try {
                         const user = await globalThis.client.users.fetch(ownerId);
                         if (user) {
-                            await user.send('⚠️ CAPTCHA DETECTADO. El bot ha sido pausado automáticamente. Usa !resume tras resolverlo.');
+                            const captchaLink = `https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id}`;
+                            await user.send(`⚠️ CAPTCHA DETECTADO. El bot ha sido pausado automáticamente.\n\n[Haz clic aquí para resolverlo](${captchaLink})\n\nUsa \`!resume\` tras resolverlo.`);
                         }
                     } catch (e) { /* ignorar error de DM */ }
                 }
