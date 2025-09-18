@@ -29,7 +29,8 @@ function formatPokemonName(name) {
     return name.toLowerCase().trim().replace(/\s+/g, ' ');
 }
 
-function handleCommand(message, prefix) {
+// CAMBIO AQUÍ: La función ahora es 'async'
+async function handleCommand(message, prefix) {
     if (!message.content.startsWith(prefix)) return;
     // Solo owners pueden ejecutar comandos
     const { OwnerIDs } = require('./config').config;
@@ -149,8 +150,36 @@ function handleCommand(message, prefix) {
             config.paused = false;
             globalState.paused = false;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-            message.reply('✅ Sistema reanudado.');
-            console.log("[INFO] El bot se ha reanudado. Captura de Pokémon activada.");
+            
+            // Lógica para reanudar inciensos en el canal de log
+            const channel = await client.channels.fetch(config.logChannel);
+
+            if (channel) {
+                await message.reply('✅ Sistema reanudado. Los inciensos se reanudarán en el canal de registro.');
+                console.log("[INFO] El bot se ha reanudado. Intentando reanudar inciensos en el canal de registro.");
+                try {
+                    await channel.send(`<@${config.POKETWO_ID}> inc r all`);
+                    setTimeout(async () => {
+                        const fetched = await channel.messages.fetch({ limit: 10 });
+                        const confirmMsg = fetched.find(m =>
+                            m.author.id === config.POKETWO_ID &&
+                            m.components.length > 0 &&
+                            m.components[0].components.some(c => c.label && c.label.toLowerCase() === 'confirm')
+                        );
+                        if (confirmMsg) {
+                            const confirmButton = confirmMsg.components[0].components.find(c => c.label && c.label.toLowerCase() === 'confirm');
+                            await confirmMsg.clickButton(confirmButton.customId);
+                            console.log(`[${channel.id}] ✅ Botón 'Confirm' para reanudar incienso presionado.`);
+                        }
+                    }, 1500);
+                } catch (e) {
+                    console.error(`[${channel.id}] ❌ No se pudo enviar el comando para reanudar inciensos. Error: ${e.message}`);
+                }
+            } else {
+                await message.reply('✅ Sistema reanudado. **Advertencia:** El canal de registro no está configurado, no se pudo reanudar el incienso. Usa `!log #canal` para configurarlo.');
+                console.log(`[WARN] Canal de registro no configurado. No se pudo reanudar el incienso.`);
+            }
+
             break;
         }
         case 'trade': {
