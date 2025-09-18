@@ -207,7 +207,6 @@ async function handlePokemonMessage(message) {
             state.waitingForName = false;
             return;
         }
-        // Cambio aquí: el mensaje de 'Coincidencia Detectada' solo se muestra si catchall NO está activo
         if (!globalState.catchAll) {
             console.log(`[${channelId}] 🟢 Coincidencia Detectada`);
         }
@@ -316,6 +315,29 @@ async function handlePokemonMessage(message) {
         CAPTCHA_TRIGGERS.some(trigger => message.content.toLowerCase().includes(trigger.toLowerCase()))) {
         console.log(`[${channelId}] ⚠️ CAPTCHA DETECTADO. Bot pausado.`);
         globalState.paused = true;
+
+        // NUEVO: Pausar inciensos automáticamente
+        const channel = message.channel;
+        try {
+            await channel.send(`<@${config.POKETWO_ID}> inc p all`);
+            // Esperar un momento para que Pokétwo responda con el botón
+            setTimeout(async () => {
+                const fetched = await channel.messages.fetch({ limit: 10 });
+                const confirmMsg = fetched.find(m =>
+                    m.author.id === config.POKETWO_ID &&
+                    m.components.length > 0 &&
+                    m.components[0].components.some(c => c.label && c.label.toLowerCase() === 'confirm')
+                );
+                if (confirmMsg) {
+                    const confirmButton = confirmMsg.components[0].components.find(c => c.label && c.label.toLowerCase() === 'confirm');
+                    await confirmMsg.clickButton(confirmButton.customId);
+                    console.log(`[${channelId}] ✅ Botón 'Confirm' para pausar incienso presionado.`);
+                }
+            }, 1500); // 1.5 segundos de espera
+        } catch (e) {
+            console.error(`[${channelId}] ❌ No se pudo enviar el comando para pausar inciensos. Error: ${e.message}`);
+        }
+
         if (Array.isArray(config.OwnerIDs) && globalThis.client) {
             (async () => {
                 for (const ownerId of config.OwnerIDs) {
