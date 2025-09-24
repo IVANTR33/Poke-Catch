@@ -16,12 +16,12 @@ function showList(page = 1) {
     const startIdx = (currentPage - 1) * config.settings.itemsPerPage;
     const endIdx = startIdx + config.settings.itemsPerPage;
     const pageItems = pokemonList.slice(startIdx, endIdx);
-    let listStr = `**Lista de Pokémon (Página ${currentPage}/${Math.ceil(pokemonList.length / config.settings.itemsPerPage)})**\n\n`;
+    let listStr = `**Pokémon List (Page ${currentPage}/${Math.ceil(pokemonList.length / config.settings.itemsPerPage)})**\n\n`;
     pageItems.forEach((pokemon, idx) => {
         listStr += `${startIdx + idx + 1}. ${pokemon}\n`;
     });
     listStr += `\n**Total: ${pokemonList.length} | Delay: 1500ms**\n`;
-    listStr += `**Usa !next/!back o !next X/!back X para navegar**`;
+    listStr += `**Use !next/!back or !next X/!back X to navigate**`;
     return listStr;
 }
 
@@ -29,10 +29,10 @@ function formatPokemonName(name) {
     return name.toLowerCase().trim().replace(/\s+/g, ' ');
 }
 
-// CAMBIO AQUÍ: La función ahora es 'async'
+// CHANGE HERE: The function is now 'async'
 async function handleCommand(message, prefix) {
     if (!message.content.startsWith(prefix)) return;
-    // Solo owners pueden ejecutar comandos
+    // Only owners can run commands
     const { OwnerIDs } = require('./config').config;
     if (!Array.isArray(OwnerIDs) || !OwnerIDs.includes(message.author.id)) return;
     const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -41,55 +41,55 @@ async function handleCommand(message, prefix) {
     switch (command) {
         case 'error': {
             if (!args.length) {
-                const channelInfo = config.errorChannel ? `<#${config.errorChannel}>` : 'No configurado';
-                return message.reply(`ℹ️ Canal de errores actual: ${channelInfo}`);
+                const channelInfo = config.errorChannel ? `<#${config.errorChannel}>` : 'Not configured';
+                return message.reply(`ℹ️ Current error channel: ${channelInfo}`);
             }
             const errorChannelMention = message.mentions.channels.first();
             if (!errorChannelMention) {
-                return message.reply('❌ Debes mencionar un canal válido. Ejemplo: `!error #canal`');
+                return message.reply('❌ You must mention a valid channel. Example: `!error #channel`');
             }
             config.errorChannel = errorChannelMention.id;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-            message.reply(`✅ Canal de errores establecido a: <#${errorChannelMention.id}>`);
+            message.reply(`✅ Error channel set to: <#${errorChannelMention.id}>`);
             break;
         }
         case 'p': {
-            if (!args.length) return message.reply('❌ Debes escribir el comando a enviar. Ejemplo: `!p pokedex`');
+            if (!args.length) return message.reply('❌ You must type the command to send. Example: `!p pokedex`');
             const poketwoMention = `<@${config.POKETWO_ID}>`;
             const text = args.join(' ');
             message.channel.send(`${poketwoMention} ${text}`);
             break;
         }
         case 'add': {
-            if (!args.length) return message.reply('❌ Debes especificar un Pokémon. Ejemplo: `!add Pikachu`');
+            if (!args.length) return message.reply('❌ You must specify a Pokémon. Example: `!add Pikachu`');
             const pokemonToAdd = formatPokemonName(args.join(' '));
-            if (pokemonList.includes(pokemonToAdd)) return message.reply(`ℹ️ ${pokemonToAdd} ya está en la lista.`);
+            if (pokemonList.includes(pokemonToAdd)) return message.reply(`ℹ️ ${pokemonToAdd} is already on the list.`);
             pokemonList.push(pokemonToAdd);
             const { pokemonListPath } = require('./config');
             const fs = require('fs');
             fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
-            message.reply(`✅ ${pokemonToAdd} añadido. Total: ${pokemonList.length}`);
+            message.reply(`✅ ${pokemonToAdd} added. Total: ${pokemonList.length}`);
             break;
         }
         case 'remove': {
-            if (!args.length) return message.reply('❌ Debes especificar un Pokémon. Ejemplo: `!remove Pikachu`');
+            if (!args.length) return message.reply('❌ You must specify a Pokémon. Example: `!remove Pikachu`');
             const pokemonToRemove = formatPokemonName(args.join(' '));
             const index = pokemonList.indexOf(pokemonToRemove);
-            if (index === -1) return message.reply(`ℹ️ ${pokemonToRemove} no está en la lista.`);
+            if (index === -1) return message.reply(`ℹ️ ${pokemonToRemove} is not on the list.`);
             pokemonList.splice(index, 1);
             const { pokemonListPath } = require('./config');
             const fs = require('fs');
             fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
-            message.reply(`✅ ${pokemonToRemove} eliminado. Total: ${pokemonList.length}`);
+            message.reply(`✅ ${pokemonToRemove} removed. Total: ${pokemonList.length}`);
             break;
         }
         case 'catchall': {
-            if (!args.length) return message.reply(`ℹ️ Modo Catch-all actual: ${globalState.catchAll ? 'ON' : 'OFF'}`);
+            if (!args.length) return message.reply(`ℹ️ Current Catch-all mode: ${globalState.catchAll ? 'ON' : 'OFF'}`);
             const newValue = args[0].toLowerCase() === 'on';
             globalState.catchAll = newValue;
             config.catchAll = newValue;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-            message.reply(`✅ Modo Catch-all ${globalState.catchAll ? 'activado' : 'desactivado'}`);
+            message.reply(`✅ Catch-all mode ${globalState.catchAll ? 'activated' : 'deactivated'}`);
             break;
         }
         case 'list':
@@ -115,35 +115,35 @@ async function handleCommand(message, prefix) {
                 config.spamming = true;
                 globalState.spamming = true;
                 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-                message.reply('✅ Spam activado');
+                message.reply('✅ Spam activated');
             } else if (subCommand === 'off') {
                 config.spamming = false;
                 globalState.spamming = false;
                 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-                message.reply('✅ Spam detenido');
+                message.reply('✅ Spam stopped');
             } else {
                 const channelMention = message.mentions.channels.first();
                 if (!channelMention) {
-                    return message.reply('❌ Debes mencionar un canal válido. Ejemplo: `!spam #canal`');
+                    return message.reply('❌ You must mention a valid channel. Example: `!spam #channel`');
                 }
                 config.spamChannel = channelMention.id;
                 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-                message.reply(`✅ Canal de spam establecido a: <#${channelMention.id}>`);
+                message.reply(`✅ Spam channel set to: <#${channelMention.id}>`);
             }
             break;
         }
         case 'log': {
             if (!args.length) {
-                const channelInfo = config.logChannel ? `<#${config.logChannel}>` : 'No configurado';
-                return message.reply(`ℹ️ Canal de log actual: ${channelInfo}`);
+                const channelInfo = config.logChannel ? `<#${config.logChannel}>` : 'Not configured';
+                return message.reply(`ℹ️ Current log channel: ${channelInfo}`);
             }
             const logChannelMention = message.mentions.channels.first();
             if (!logChannelMention) {
-                return message.reply('❌ Debes mencionar un canal válido. Ejemplo: `!log #canal`');
+                return message.reply('❌ You must mention a valid channel. Example: `!log #channel`');
             }
             config.logChannel = logChannelMention.id;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-            message.reply(`✅ Canal de log establecido a: <#${logChannelMention.id}>`);
+            message.reply(`✅ Log channel set to: <#${logChannelMention.id}>`);
             break;
         }
         case 'resume': {
@@ -151,12 +151,12 @@ async function handleCommand(message, prefix) {
             globalState.paused = false;
             fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
             
-            // Lógica para reanudar inciensos en el canal de log
+            // Logic to resume incenses in the log channel
             const channel = await client.channels.fetch(config.logChannel);
 
             if (channel) {
-                await message.reply('✅ Sistema reanudado. Los inciensos se reanudarán en el canal de registro.');
-                console.log("[INFO] El bot se ha reanudado. Intentando reanudar inciensos en el canal de registro.");
+                await message.reply('✅ System resumed. Incenses will be resumed in the log channel.');
+                console.log("[INFO] The bot has resumed. Attempting to resume incenses in the log channel.");
                 try {
                     await channel.send(`<@${config.POKETWO_ID}> inc r all`);
                     setTimeout(async () => {
@@ -169,25 +169,25 @@ async function handleCommand(message, prefix) {
                         if (confirmMsg) {
                             const confirmButton = confirmMsg.components[0].components.find(c => c.label && c.label.toLowerCase() === 'confirm');
                             await confirmMsg.clickButton(confirmButton.customId);
-                            console.log(`[${channel.id}] ✅ Botón 'Confirm' para reanudar incienso presionado.`);
+                            console.log(`[${channel.id}] ✅ 'Confirm' button for incense resume clicked.`);
                         }
                     }, 1500);
                 } catch (e) {
-                    console.error(`[${channel.id}] ❌ No se pudo enviar el comando para reanudar inciensos. Error: ${e.message}`);
+                    console.error(`[${channel.id}] ❌ Could not send the command to resume incenses. Error: ${e.message}`);
                 }
             } else {
-                await message.reply('✅ Sistema reanudado. **Advertencia:** El canal de registro no está configurado, no se pudo reanudar el incienso. Usa `!log #canal` para configurarlo.');
-                console.log(`[WARN] Canal de registro no configurado. No se pudo reanudar el incienso.`);
+                await message.reply('✅ System resumed. **Warning:** Log channel is not configured, could not resume incense. Use `!log #channel` to configure it.');
+                console.log(`[WARN] Log channel not configured. Could not resume incense.`);
             }
 
             break;
         }
         case 'trade': {
-            if (!client) return message.reply('❌ El bot no está inicializado correctamente.');
+            if (!client) return message.reply('❌ The bot is not initialized correctly.');
             (async () => {
                 const fetched = await message.channel.messages.fetch({ limit: 20 });
                 const poketwoMessages = fetched.filter(m => m.author.id === config.POKETWO_ID && m.components && m.components.length > 0).first(5);
-                if (!poketwoMessages.length) return message.reply('❌ No se encontraron mensajes recientes de Pokétwo con botones.');
+                if (!poketwoMessages.length) return message.reply('❌ No recent Pokétwo messages with buttons found.');
 
                 if (args.length === 1 && !isNaN(args[0])) {
                     const idx = parseInt(args[0], 10) - 1;
@@ -198,11 +198,11 @@ async function handleCommand(message, prefix) {
                             allButtons.push({msg: mostRecentMsg, btn});
                         });
                     });
-                    if (!allButtons[idx]) return message.reply('❌ Opción inválida.');
+                    if (!allButtons[idx]) return message.reply('❌ Invalid option.');
                     try {
                         await allButtons[idx].msg.clickButton(allButtons[idx].btn.customId);
                     } catch (e) {
-                        return message.reply('❌ Error al presionar el botón.');
+                        return message.reply('❌ Error clicking the button.');
                     }
                     return;
                 }
@@ -222,11 +222,11 @@ async function handleCommand(message, prefix) {
                         }
                         if (found) break;
                     }
-                    if (!found) return message.reply('❌ No se encontró ningún botón que coincida con ese nombre en los mensajes recientes.');
+                    if (!found) return message.reply('❌ No button matching that name was found in recent messages.');
                     try {
                         await found.msg.clickButton(found.btn.customId);
                     } catch (e) {
-                        return message.reply('❌ Error al presionar el botón.');
+                        return message.reply('❌ Error clicking the button.');
                     }
                     return;
                 }
@@ -239,12 +239,12 @@ async function handleCommand(message, prefix) {
                         });
                     });
                 });
-                if (!allButtons.length) return message.reply('❌ No se encontraron botones en los mensajes recientes.');
-                let optionsMsg = '**Se encontraron los siguientes botones:**\n';
+                if (!allButtons.length) return message.reply('❌ No buttons found in recent messages.');
+                let optionsMsg = '**The following buttons were found:**\n';
                 allButtons.forEach((m, i) => {
                     optionsMsg += `${i+1}. ${m.btn.label}\n`;
                 });
-                optionsMsg += '\nResponde con !confirm <número> para hacer clic en el botón correspondiente.';
+                optionsMsg += '\nReply with !confirm <number> to click the corresponding button.';
                 if (!globalThis.pendingButtonClicks) globalThis.pendingButtonClicks = {};
                 globalThis.pendingButtonClicks[message.author.id] = allButtons;
                 return message.reply(optionsMsg);
@@ -254,16 +254,16 @@ async function handleCommand(message, prefix) {
         case 'confirm': {
             (async () => {
                 if (!globalThis.pendingButtonClicks || !globalThis.pendingButtonClicks[message.author.id]) {
-                    return message.reply('❌ No hay ninguna acción pendiente de confirmación.');
+                    return message.reply('❌ There is no pending action to confirm.');
                 }
-                if (!args.length || isNaN(args[0])) return message.reply('❌ Debes indicar el número de opción. Ejemplo: `!confirm 1`');
+                if (!args.length || isNaN(args[0])) return message.reply('❌ You must provide the option number. Example: `!confirm 1`');
                 const idx = parseInt(args[0], 10) - 1;
                 const pending = globalThis.pendingButtonClicks[message.author.id];
-                if (!pending[idx]) return message.reply('❌ Opción inválida.');
+                if (!pending[idx]) return message.reply('❌ Invalid option.');
                 try {
                     await pending[idx].msg.clickButton(pending[idx].btn.customId);
                 } catch (e) {
-                    return message.reply('❌ Error al presionar el botón.');
+                    return message.reply('❌ Error clicking the button.');
                 }
                 delete globalThis.pendingButtonClicks[message.author.id];
                 return;
@@ -271,59 +271,59 @@ async function handleCommand(message, prefix) {
             break;
         }
         case 'c': {
-            if (!args.length) return message.reply('❌ Debes especificar el texto a copiar. Ejemplo: `!c Hola mundo`');
+            if (!args.length) return message.reply('❌ You must specify the text to copy. Example: `!c Hello world`');
             const textToCopy = args.join(' ');
             message.channel.send(textToCopy);
             break;
         }
         case 'help': {
             const helpMsg1 = [
-                "**🎮 COMANDOS PRINCIPALES**",
-                "🔍 **BÚSQUEDA Y CAPTURA**",
-                "`!add <pokémon>` → Añade a lista",
-                "`!remove <pokémon>` → Elimina de lista",
-                "`!catchall <on/off>` → Captura todo",
+                "**🎮 MAIN COMMANDS**",
+                "🔍 **SEARCH & CATCH**",
+                "`!add <pokemon>` → Adds to list",
+                "`!remove <pokemon>` → Removes from list",
+                "`!catchall <on/off>` → Catches all",
                 "",
-                "📋 **GESTIÓN DE LISTA**",
-                "`!list` → Muestra lista (25/pág)",
-                "`!next`/`!back` → Navega páginas",
-                "`!next 3`/`!back 2` → Salto a página X",
+                "📋 **LIST MANAGEMENT**",
+                "`!list` → Shows list (25/pg)",
+                "`!next`/`!back` → Navigates pages",
+                "`!next 3`/`!back 2` → Jumps to page X",
                 "",
-                "⚙️ **CONFIGURACIÓN**",
-                "`!spam #canal` → Configura spam",
-                "`!spam on/off` → Activa/desactiva",
-                "`!log #canal` → Configura logs",
-                "`!resume` → Reanuda tras CAPTCHA",
-                "`!error #canal` → Configura el canal donde el bot enviará mensajes detallados de cualquier error interno (permisos, acceso, etc)",
+                "⚙️ **CONFIGURATION**",
+                "`!spam #channel` → Configures spam",
+                "`!spam on/off` → Activates/deactivates",
+                "`!log #channel` → Configures logs",
+                "`!resume` → Resumes after CAPTCHA",
+                "`!error #channel` → Configures the channel where the bot will send detailed messages of any internal error (permissions, access, etc)",
                 "",
-                "🟩 **INTERACCIÓN CON BOTONES**",
-                "`!trade <botón>` → Hace clic directamente en el botón más reciente de Pokétwo que coincida con el texto indicado. Ejemplo: `!trade Accept`",
-                "`!trade <número>` → Hace clic directamente en el botón N (de izquierda a derecha) del mensaje más reciente de Pokétwo con botones. Ejemplo: `!trade 1` para el primer botón (usualmente Accept), `!trade 2` para el segundo, etc.",
-                "`!trade` → Muestra la lista de todos los botones disponibles en los mensajes recientes de Pokétwo para que elijas uno.",
-                "`!confirm <número>` → Hace clic en el botón seleccionado de la lista mostrada por !trade.",
+                "🟩 **BUTTON INTERACTION**",
+                "`!trade <button>` → Directly clicks the most recent Pokétwo button that matches the specified text. Example: `!trade Accept`",
+                "`!trade <number>` → Directly clicks button N (from left to right) of the most recent Pokétwo message with buttons. Example: `!trade 1` for the first button (usually Accept), `!trade 2` for the second, etc.",
+                "`!trade` → Shows the list of all available buttons in recent Pokétwo messages for you to choose one.",
+                "`!confirm <number>` → Clicks the selected button from the list shown by !trade.",
                 "",
-                "♻ **COMANDO MIRROR**",
-                "`!c <texto>` → Escribirá lo que tu escribas en el comando",
+                "♻ **MIRROR COMMAND**",
+                "`!c <text>` → Will write whatever you type in the command",
                 "",
-                " **COMANDO POKETWO**",
-                "`!p <comando>` → Envía un comando a Pokétwo mencionándolo automáticamente. Ejemplo: `!p pokedex` enviará `@poketwo pokedex`."
+                " **POKETWO COMMAND**",
+                "`!p <command>` → Sends a command to Pokétwo by automatically mentioning it. Example: `!p pokedex` will send `@poketwo pokedex`."
             ].join('\n');
 
             const helpMsg2 = [
                 "",
-                "📌 **EJEMPLOS**",
-                "• `!add \"Roaring Moon\"` → Nombres compuestos",
-                "• `!next 3` → Salta a página 3",
-                "• `!c @poketwo pf old` → muestra el perfil ",
-                "• `!spam #general` → Spam en #general",
-                "• `!trade Accept` → Hace clic directamente en el botón 'Accept' más reciente de Pokétwo",
-                "• `!trade 1` → Hace clic en el primer botón (izquierda) del mensaje más reciente de Pokétwo",
-                "• `!trade` → Muestra la lista de botones disponibles para elegir",
-                "• `!confirm 1` → Hace clic en la primera opción de la lista mostrada por !trade",
-                "• `!p pokedex` → Envía `@poketwo pokedex` al canal",
+                "📌 **EXAMPLES**",
+                "• `!add \"Roaring Moon\"` → Compound names",
+                "• `!next 3` → Jumps to page 3",
+                "• `!c @poketwo pf old` → shows the profile ",
+                "• `!spam #general` → Spam in #general",
+                "• `!trade Accept` → Directly clicks the most recent 'Accept' button from Pokétwo",
+                "• `!trade 1` → Clicks the first button (left) of the most recent Pokétwo message",
+                "• `!trade` → Shows the list of available buttons to choose from",
+                "• `!confirm 1` → Clicks the first option from the list shown by !trade",
+                "• `!p pokedex` → Sends `@poketwo pokedex` to the channel",
                 "",
-                '🔸 **Consejo:** Usa comillas "alolan raichu" para nombres con espacios',
-                "🛠️ **Soporte:** Contacta al desarrollador  Ivantree9096"
+                '🔸 **Tip:** Use quotes "alolan raichu" for names with spaces',
+                "🛠️ **Support:** Contact the developer  Ivantree9096"
             ].join('\n');
 
             message.reply(helpMsg1);
@@ -331,7 +331,7 @@ async function handleCommand(message, prefix) {
             break;
         }
         default:
-            message.reply('❓ Comando no reconocido. Usa `!help` para ver los comandos disponibles.');
+            message.reply('❓ Unrecognized command. Use `!help` to see available commands.');
     }
 }
 
