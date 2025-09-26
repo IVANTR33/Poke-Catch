@@ -27,7 +27,10 @@ function normalizeName(name) {
 }
 
 function extractPokemonName(content) {
-    let cleanContent = content
+    // Tomar solo el contenido de la primera línea para ignorar pings, IDs o textos secundarios.
+    let firstLineContent = content.split('\n')[0];
+
+    let cleanContent = firstLineContent
         .replace(/^(Poké-Name APP:)\s*/i, '')
         .replace(/:\s*\d{1,3}\.\d+%/g, '')
         .replace(/\[.*?\]/g, '')
@@ -85,31 +88,31 @@ async function sendLog(pokemonName, channelId, captureMessage) {
         const channel = await globalThis.client.channels.fetch(config.logChannel);
         if (!channel) return;
 
-        let gender = '?';
-        let level = '?';
-        let iv = '?';
+        let genero = '¿?';
+        let nivel = '¿?';
+        let iv = '¿?';
         let match = captureMessage.match(/Level (\d+)/i);
-        if (match) level = match[1];
+        if (match) nivel = match[1];
 
         match = captureMessage.match(/([♂️♀️])/);
         if (match) {
-            gender = match[1];
+            genero = match[1];
         } else if (captureMessage.includes(':male:')) {
-            gender = '♂️';
+            genero = '♂️';
         } else if (captureMessage.includes(':female:')) {
-            gender = '♀️';
+            genero = '♀️';
         }
         match = captureMessage.match(/\((\d{1,3}\.\d+)%\)/);
         if (match) iv = match[1] + '%';
 
-        const date = new Date();
-        const dateStr = date.toLocaleString('en-US', {
+        const fecha = new Date();
+        const fechaStr = fecha.toLocaleString('es-ES', {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
             hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
         });
 
-        let guildName = '?';
-        let channelName = '?';
+        let guildName = '¿?';
+        let channelName = '¿?';
         let msgLink = '';
         let channelClickable = '';
         if (globalThis.lastCaptureMsg) {
@@ -133,19 +136,19 @@ async function sendLog(pokemonName, channelId, captureMessage) {
 
         const logMessage = [
             `# * 🔶 ${pokemonName}`,
-            `| Successful catch 🎉`,
-            `| Guild: **${guildName}**`,
-            `| Channel: ${channelClickable}`,
-            (msgLink ? `| [**go to capture message**](${msgLink})` : ''),
-            `| **Gender:** ${gender}`,
-            `| **Level:** ${level}`,
+            `| Captura exitosa 🎉`,
+            `| Servidor: **${guildName}**`,
+            `| Canal: ${channelClickable}`,
+            (msgLink ? `| [**ir al mensaje de captura**](${msgLink})` : ''),
+            `| **Género:** ${genero}`,
+            `| **Nivel:** ${nivel}`,
             `| **IV:** ${iv}`,
-            `| **Date:** ${dateStr}`
+            `| **fecha:** ${fechaStr}`
         ].filter(Boolean).join('\n');
-        console.log(`[LOG] Sending capture log: ${pokemonName} | Guild: ${guildName} | Channel: #${channelName}`);
-        await channel.send(logMessage);
+    console.log(`[LOG] Enviando log de captura: ${pokemonName} | Servidor: ${guildName} | Canal: #${channelName}`);
+    await channel.send(logMessage);
     } catch (error) {
-        await reportError(`Error sending capture log (${pokemonName}) to the log channel: ${error && error.message ? error.message : error}`,
+        await reportError(`Error al enviar log de captura (${pokemonName}) al canal de log: ${error && error.message ? error.message : error}`,
             globalThis.client, config);
     }
 }
@@ -166,7 +169,7 @@ async function handlePokemonMessage(message) {
     if (message.author.id === config.POKETWO_ID &&
         (message.content.includes("A wild pokémon has appeared!") ||
          message.embeds.some(e => e.description?.includes("Guess the pokémon")))) {
-        console.log(`[${channelId}] 🔶 spawn detected`);
+        console.log(`[${channelId}] 🔶 spawn detectado`);
         state.lastSpawn = Date.now();
         state.pokemon = null;
         state.attempts = 0;
@@ -174,7 +177,7 @@ async function handlePokemonMessage(message) {
         state.failedNames = new Set();
         setTimeout(() => {
             if (state.waitingForName && !state.pokemon) {
-                console.log(`[${channelId}] ⏳ No name received, requesting hint...`);
+                console.log(`[${channelId}] ⏳ No se recibió nombre, solicitando pista...`);
                 message.channel.send(`<@${config.POKETWO_ID}> h`);
                 state.waitingForName = false;
             }
@@ -185,11 +188,11 @@ async function handlePokemonMessage(message) {
     if (config.nameBots.includes(message.author.id) && state.waitingForName) {
         const name = extractPokemonName(message.content);
         if (!name) {
-            console.log(`[${channelId}] ⚠️ Could not extract name. Aborting...`);
+            console.log(`[${channelId}] ⚠️ No se pudo extraer el nombre. Abortando...`);
             return;
         }
         const normalizedName = normalizeName(name);
-        console.log(`[${channelId}] 🔄 Analyzing: ${normalizedName}`);
+        console.log(`[${channelId}] 🔄 Analizando: ${normalizedName}`);
         let shouldCatch = false;
         if (globalState.catchAll) {
             shouldCatch = true;
@@ -197,29 +200,29 @@ async function handlePokemonMessage(message) {
             shouldCatch = localPokemonList.some(p => normalizeName(p) === normalizedName);
         }
         if (!shouldCatch) {
-            console.log(`[${channelId}] 🛑 No match on list`);
-            console.log(`[${channelId}] 🚫 ${normalizedName} ignored`);
+            console.log(`[${channelId}] 🛑 No hay coincidencia en lista`);
+            console.log(`[${channelId}] 🚫 ${normalizedName} ignorado`);
             state.waitingForName = false;
             return;
         }
         if (state.failedNames.has(normalizedName)) {
-            console.log(`[${channelId}] ⚠️ ${normalizedName} failed this spawn, ignoring...`);
+            console.log(`[${channelId}] ⚠️ ${normalizedName} falló en este spawn, ignorando...`);
             state.waitingForName = false;
             return;
         }
         if (!globalState.catchAll) {
-            console.log(`[${channelId}] 🟢 Match Detected`);
+            console.log(`[${channelId}] 🟢 Coincidencia Detectada`);
         }
         state.pokemon = normalizedName;
         state.attempts = 1;
         state.waitingForName = false;
         setTimeout(async () => {
             try {
-                console.log(`[${channelId}] 🎣 Catching ${normalizedName}`);
+                console.log(`[${channelId}] 🎣 Capturando ${normalizedName}`);
                 await message.channel.send(`<@${config.POKETWO_ID}> c ${normalizedName}`);
             } catch (error) {
-                console.error(`[${channelId}] ❌ Error sending catch message: ${error.message}`);
-                await reportError(`Permission error while catching. Channel: <#${channelId}>. Make sure the bot has permission to send messages in that channel.`,
+                console.error(`[${channelId}] ❌ Error al enviar mensaje de captura: ${error.message}`);
+                await reportError(`Error de permisos al capturar. Canal: <#${channelId}>. Asegúrate de que el bot tenga permiso para enviar mensajes en ese canal.`,
                     globalThis.client, config);
                 state.pokemon = null;
             }
@@ -229,24 +232,24 @@ async function handlePokemonMessage(message) {
 
     if (message.author.id === config.POKETWO_ID && message.content.includes("That is the wrong pokémon!")) {
         if (!state.pokemon) return;
-        console.log(`[${channelId}] ❌ Catch failed <${state.pokemon}>`);
+        console.log(`[${channelId}] ❌ Captura fallida <${state.pokemon}>`);
         state.failedNames.add(state.pokemon);
         if (state.attempts < config.settings.maxAttempts) {
             state.attempts++;
             state.pokemon = null;
             setTimeout(async () => {
                 try {
-                    console.log(`[${channelId}] 📝 Requesting new hint...`);
+                    console.log(`[${channelId}] 📝 Solicitando nueva pista...`);
                     await message.channel.send(`<@${config.POKETWO_ID}> h`);
                 } catch (error) {
-                    console.error(`[${channelId}] ❌ Error requesting hint: ${error.message}`);
-                    await reportError(`Permission error while requesting hint. Channel: <#${channelId}>. Make sure the bot has permission to send messages in that channel.`,
+                    console.error(`[${channelId}] ❌ Error al solicitar pista: ${error.message}`);
+                    await reportError(`Error de permisos al solicitar pista. Canal: <#${channelId}>. Asegúrate de que el bot tenga permiso para enviar mensajes en ese canal.`,
                         globalThis.client, config);
                     state.pokemon = null;
                 }
             }, config.settings.reactionTime);
         } else {
-            console.log(`[${channelId}] 🛑 Attempt limit reached`);
+            console.log(`[${channelId}] 🛑 Límite de intentos alcanzado`);
             state.pokemon = null;
             state.attempts = 0;
         }
@@ -258,7 +261,7 @@ async function handlePokemonMessage(message) {
         const [pokemonName] = await solveHint(message);
         if (!pokemonName) return;
         const normalizedName = normalizeName(pokemonName);
-        console.log(`[${channelId}] 📩 Hint solved: ${normalizedName}`);
+        console.log(`[${channelId}] 📩 Hint resuelto: ${normalizedName}`);
         let shouldCatch = false;
         if (globalState.catchAll) {
             shouldCatch = true;
@@ -266,26 +269,26 @@ async function handlePokemonMessage(message) {
             shouldCatch = localPokemonList.some(p => normalizeName(p) === normalizedName);
         }
         if (!shouldCatch) {
-            console.log(`[${channelId}] ❌ No match on list (Hint)`);
-            console.log(`[${channelId}] 🚫 ${normalizedName} ignored`);
+            console.log(`[${channelId}] ❌ No hay coincidencia en lista (Hint)`);
+            console.log(`[${channelId}] 🚫 ${normalizedName} ignorado`);
             return;
         }
         if (state.failedNames.has(normalizedName)) {
-            console.log(`[${channelId}] ⚠️ ${normalizedName} failed this spawn, ignoring...`);
+            console.log(`[${channelId}] ⚠️ ${normalizedName} falló en este spawn, ignorando...`);
             return;
         }
         if (!globalState.catchAll) {
-            console.log(`[${channelId}] 📗 Match on list (Hint)`);
+            console.log(`[${channelId}] 📗 Coincidencia en lista (Hint)`);
         }
         state.pokemon = normalizedName;
         state.attempts++;
         setTimeout(async () => {
             try {
-                console.log(`[${channelId}] 🎣 Catching from hint: ${normalizedName}`);
+                console.log(`[${channelId}] 🎣 Capturando desde hint: ${normalizedName}`);
                 await message.channel.send(`<@${config.POKETWO_ID}> c ${normalizedName}`);
             } catch (error) {
-                console.error(`[${channelId}] ❌ Error sending catch message from hint: ${error.message}`);
-                await reportError(`Permission error while catching (hint). Channel: <#${channelId}>. Make sure the bot has permission to send messages.`,
+                console.error(`[${channelId}] ❌ Error al enviar mensaje de captura desde hint: ${error.message}`);
+                await reportError(`Error de permisos al capturar (hint). Canal: <#${channelId}>. Asegúrate de que el bot tenga permiso para enviar mensajes.`,
                     globalThis.client, config);
                 state.pokemon = null;
             }
@@ -296,7 +299,7 @@ async function handlePokemonMessage(message) {
     if (message.author.id === config.POKETWO_ID &&
         (message.content.includes("Congratulations") || message.content.includes("You caught a"))) {
         if (!state.pokemon) return;
-        console.log(`[${channelId}] 🎉 Successful catch <${state.pokemon}>`);
+        console.log(`[${channelId}] 🎉 Captura exitosa <${state.pokemon}>`);
         globalThis.lastCaptureMsg = message;
         sendLog(state.pokemon, channelId, message.content);
         state.pokemon = null;
@@ -313,14 +316,14 @@ async function handlePokemonMessage(message) {
     ];
     if (message.author.id === config.POKETWO_ID &&
         CAPTCHA_TRIGGERS.some(trigger => message.content.toLowerCase().includes(trigger.toLowerCase()))) {
-        console.log(`[${channelId}] ⚠️ CAPTCHA DETECTED. Bot paused.`);
+        console.log(`[${channelId}] ⚠️ CAPTCHA DETECTADO. Bot pausado.`);
         globalState.paused = true;
 
-        // NEW: Automatically pause incenses
+        // NUEVO: Pausar inciensos automáticamente
         const channel = message.channel;
         try {
             await channel.send(`<@${config.POKETWO_ID}> inc p all`);
-            // Wait a moment for Pokétwo to respond with the button
+            // Esperar un momento para que Pokétwo responda con el botón
             setTimeout(async () => {
                 const fetched = await channel.messages.fetch({ limit: 10 });
                 const confirmMsg = fetched.find(m =>
@@ -331,11 +334,11 @@ async function handlePokemonMessage(message) {
                 if (confirmMsg) {
                     const confirmButton = confirmMsg.components[0].components.find(c => c.label && c.label.toLowerCase() === 'confirm');
                     await confirmMsg.clickButton(confirmButton.customId);
-                    console.log(`[${channelId}] ✅ 'Confirm' button to pause incense clicked.`);
+                    console.log(`[${channelId}] ✅ Botón 'Confirm' para pausar incienso presionado.`);
                 }
-            }, 1500); // 1.5 second wait
+            }, 1500); // 1.5 segundos de espera
         } catch (e) {
-            console.error(`[${channelId}] ❌ Could not send the command to pause incenses. Error: ${e.message}`);
+            console.error(`[${channelId}] ❌ No se pudo enviar el comando para pausar inciensos. Error: ${e.message}`);
         }
 
         if (Array.isArray(config.OwnerIDs) && globalThis.client) {
@@ -345,9 +348,9 @@ async function handlePokemonMessage(message) {
                         const user = await globalThis.client.users.fetch(ownerId);
                         if (user) {
                             const captchaLink = `https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id}`;
-                            await user.send(`⚠️ CAPTCHA DETECTED. The bot has been automatically paused.\n\n[Click here to solve it](${captchaLink})\n\nUse \`!resume\` after solving it.`);
+                            await user.send(`⚠️ CAPTCHA DETECTADO. El bot ha sido pausado automáticamente.\n\n[Haz clic aquí para resolverlo](${captchaLink})\n\nUsa \`!resume\` tras resolverlo.`);
                         }
-                    } catch (e) { /* ignore DM error */ }
+                    } catch (e) { /* ignorar error de DM */ }
                 }
             })();
         }
