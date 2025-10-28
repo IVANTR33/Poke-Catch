@@ -1,9 +1,8 @@
-/**
- * Envía un error al canal configurado en config.errorChannel, o a consola si falla.
- * @param {string} errorMsg - El mensaje de error a enviar
- * @param {object} client - El cliente de Discord
- * @param {object} config - El objeto de configuración
- */
+// utils.js
+const fs = require('fs');
+const path = require('path');
+
+//==============================
 async function reportError(errorMsg, client, config) {
     if (config.errorChannel && client) {
         try {
@@ -19,7 +18,19 @@ async function reportError(errorMsg, client, config) {
     // Fallback: consola
     console.error('[ERROR]', errorMsg);
 }
-// utils.js
+
+//============================
+function saveConfig(config) {
+    try {
+        const configPath = path.join(__dirname, 'config.json');
+        // Usando 2 espacios para formato
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2)); 
+        console.log('[CONFIG] Configuración guardada con éxito.');
+    } catch (error) {
+        console.error('[ERROR] Falló al guardar la configuración:', error.message);
+    }
+}
+
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 function getRandomInt(min, max) {
@@ -34,5 +45,6 @@ module.exports = {
     delay,
     getRandomInt,
     pickRandom,
-    reportError
+    reportError,
+    saveConfig
 };
