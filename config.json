@@ -1,12 +1,10 @@
 {
-  "TOKEN": "TU_TOKEN_AQUI",  
-  "OwnerIDs": ["EL_ID_Aqui"], 
-
+  "TOKEN": "YOU_TOKEN_HERE",
+  "OwnerIDs": ["YOU_ID_HERE"],
   "POKETWO_ID": "716390085896962058",
-  "nameBots": ["874910942490677270","854233015475109888"], 
-  "spamChannel": "", 
+  "nameBots": ["874910942490677270","854233015475109888"],
+  "spamChannel": "",
   "logChannel": "",
-
   "settings": {
     "maxAttempts": 4,
     "reactionTime": 2500,
@@ -16,8 +14,10 @@
     "spamMinDelay": 1500,
     "spamMaxDelay": 3000
   },
-
-  "catchAll": false,
+  "serverAllMode": true,
+  "allowedServers": [],
+  "catchAll": true,
   "spamming": false,
-  "errorChannel": ""
+  "errorChannel": "",
+  "paused": false
 }
