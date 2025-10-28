@@ -59,6 +59,9 @@ client.on("ready", () => {
     const totalGuilds = client.guilds.cache.size;
     const totalChannels = client.channels.cache.size;
     const botUptime = new Date().toLocaleTimeString();
+    
+    // Obtener estado del modo servidor (Server Mode)
+    const currentServerMode = config.serverAllMode ?? false;
 
     console.log(`
 ╔════════════════════════════════════════════╗
@@ -71,6 +74,7 @@ client.on("ready", () => {
 ╠════════════════════════════════════════════╣
 ║   ⚙️ CONFIGURATION:
 ║   🎯 Catch-all: ${globalState.catchAll ? 'ON'.padEnd(19) : 'OFF'.padEnd(18)}
+║   🎛 Servers-all: ${currentServerMode ? 'ON'.padEnd(16) : 'OFF'.padEnd(15)}
 ║   📝 Name List: ${pokemonList.length.toString().padEnd(10)}
 ║   📬 Spam Channel: ${config.spamChannel ? 'Configured'.padEnd(12) : 'Not configured'.padEnd(12)}
 ║   🗒️ Log Channel: ${config.logChannel ? 'Configured'.padEnd(14) : 'Not configured'.padEnd(14)}
