@@ -9,7 +9,6 @@ let config = require('./config').config;
 let pokemonList = require('./config').pokemonList;
 let pokemonListPath = require('./config').pokemonListPath;
 
-//========LOGIC OF RANDOM ALIAS========
 
 let pokemonAliases = {};
 try {
