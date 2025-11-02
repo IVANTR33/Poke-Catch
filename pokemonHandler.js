@@ -1,6 +1,6 @@
 // pokemonHandler.js
 
-const { reportError, delay, pickRandom } = require('./utils'); // Se añadieron delay y pickRandom
+const { reportError, delay, pickRandom } = require('./utils');
 const { solveHint } = require('pokehint');
 const fs = require('fs');
 const path = require('path');
@@ -9,50 +9,38 @@ let config = require('./config').config;
 let pokemonList = require('./config').pokemonList;
 let pokemonListPath = require('./config').pokemonListPath;
 
-// --- 1. LÓGICA DE ALIAS ALEATORIOS (MODIFICACIÓN AQUÍ) ---
+//========LOGIC OF RANDOM ALIAS========
 
 let pokemonAliases = {};
 try {
-    // Carga el archivo original. Ahora se itera para normalizar las claves.
     const rawAliases = JSON.parse(fs.readFileSync('./pokemon_aliases.json', 'utf8')); 
 
-    // MODIFICACIÓN CLAVE: Normalizar las claves a minúsculas al cargar
     for (const key in rawAliases) {
         if (rawAliases.hasOwnProperty(key)) {
-            // Convierte la clave 'Bulbasaur' a 'bulbasaur' antes de guardarla en el mapa
             const normalizedKey = normalizeAliasKey(key); 
             pokemonAliases[normalizedKey] = rawAliases[key];
         }
     }
     
-    console.log("[INFO] pokemon_aliases.json loaded successfully and normalized.");
 } catch (e) {
     console.error("[ERROR] Could not load pokemon_aliases.json. Using empty object.", e.message);
 }
 
-/**
- * Normaliza un nombre de Pokémon para usarlo como clave en pokemonAliases.
- */
 function normalizeAliasKey(name) {
     return name
         .toLowerCase()
         .replace(/[^a-z0-9]/g, '');
 }
 
-/**
- * Selecciona un alias aleatorio para el nombre de Pokémon estándar.
- */
 function getCatchNameAlias(standardName) {
     const normalizedKey = normalizeAliasKey(standardName);
     
-    // 1. Intentar encontrar un alias en el objeto/mapa
     if (pokemonAliases[normalizedKey] && Array.isArray(pokemonAliases[normalizedKey]) && pokemonAliases[normalizedKey].length > 0) {
         const alias = pickRandom(pokemonAliases[normalizedKey]);
         console.log(`[ALIAS] Selected alias '${alias}' for '${standardName}'.`);
         return alias; 
     }
     
-    // 2. Fallback: Si no hay alias, usa el nombre estándar con la primera letra capitalizada.
     if (standardName.length > 0) {
         const capitalizedName = standardName.charAt(0).toUpperCase() + standardName.slice(1);
         return capitalizedName;
@@ -60,11 +48,7 @@ function getCatchNameAlias(standardName) {
     return standardName;
 }
 
-// --- FIN LÓGICA DE ALIAS ALEATORIOS ---
 
-/**
- * Función que define si la captura está permitida **EN ESTE SERVIDOR**.
- */
 function isCaptureAllowed(guildId, config) {
     if (!guildId) return false; 
     
@@ -97,7 +81,6 @@ function normalizeName(name) {
 }
 
 function extractPokemonName(content) {
-    // Tu lógica original de extracción de nombres, que es más robusta para Name Bots.
     let firstLineContent = content.split('\n')[0];
 
     let cleanContent = firstLineContent
@@ -152,7 +135,6 @@ function getChannelState(channelId) {
     return channelStates.get(channelId);
 }
 
-// Se mantuvo la función sendLog de tu código original
 async function sendLog(pokemonName, channelId, captureMessage) {
     if (!config.logChannel) return;
     try {
@@ -227,10 +209,8 @@ async function sendLog(pokemonName, channelId, captureMessage) {
 
 async function handlePokemonMessage(message) {
     if (globalState.paused) return;
-    // Si el mensaje es de un bot, solo se procesa si es Pokétwo o un Name Bot (según tu config)
     if (message.author.bot && message.author.id !== config.POKETWO_ID && !config.nameBots.includes(message.author.id)) return;
 
-    // --- 1. VERIFICACIÓN DE PERMISO DE SERVIDOR (Server Mode) ---
     if (!message.guild || !isCaptureAllowed(message.guild.id, config)) {
         return; 
     }
@@ -245,7 +225,6 @@ async function handlePokemonMessage(message) {
     const channelId = message.channel.id;
     const state = getChannelState(channelId);
     
-    // --- 2. DETECCIÓN DE CAPTCHA (NUEVO/CORREGIDO) ---
     const CAPTCHA_TRIGGERS_CONTENT = [
         "Whoa there. Please tell us you're human!",
         "https://verifypoketwo.net/captcha/",
@@ -258,12 +237,10 @@ async function handlePokemonMessage(message) {
     function isCaptchaMessage(msg) {
         if (msg.author.id !== config.POKETWO_ID) return false;
         if (!msg.embeds || msg.embeds.length === 0) {
-            // Revisa por contenido de texto si no hay embed
             return CAPTCHA_TRIGGERS_CONTENT.some(trigger => msg.content.toLowerCase().includes(trigger.toLowerCase()));
         }
         
         const embed = msg.embeds[0];
-        // Revisa por título o descripción del embed
         return (embed.title && embed.title.includes('Verification required')) || 
                (embed.description && embed.description.includes('are you human'));
     }
@@ -294,7 +271,7 @@ async function handlePokemonMessage(message) {
             console.error(`[${channelId}] ❌ Could not send command to pause incenses. Error: ${e.message}`);
         }
 
-        // Lógica para DM al owner
+
         if (Array.isArray(config.OwnerIDs) && globalThis.client) {
             (async () => {
                 for (const ownerId of config.OwnerIDs) {
@@ -308,12 +285,11 @@ async function handlePokemonMessage(message) {
                 }
             })();
         }
-        return; // Detener el procesamiento del mensaje
+        return;
     }
-    // --- FIN DETECCIÓN DE CAPTCHA ---
 
 
-    // --- 3. DETECCIÓN DE SPAWN (Lógica original robusta) ---
+
     if (message.author.id === config.POKETWO_ID &&
         (message.content.includes("A wild pokémon has appeared!") ||
          message.embeds.some(e => e.description?.includes("Guess the pokémon")))) {
@@ -323,7 +299,6 @@ async function handlePokemonMessage(message) {
         state.attempts = 0;
         state.waitingForName = true;
         state.failedNames = new Set();
-        // Espera un tiempo para que el Name Bot responda
         setTimeout(() => {
             if (state.waitingForName && !state.pokemon) {
                 console.log(`[${channelId}] ⏳ Name not received, requesting hint...`);
@@ -334,7 +309,6 @@ async function handlePokemonMessage(message) {
         return;
     }
     
-    // --- 4. RESPUESTA DE NAME BOT (Lógica original + Alias) ---
     if (config.nameBots.includes(message.author.id) && state.waitingForName) {
         const name = extractPokemonName(message.content);
         if (!name) {
@@ -342,7 +316,7 @@ async function handlePokemonMessage(message) {
             return;
         }
         const normalizedName = normalizeName(name);
-        console.log(`[${channelId}] 🔄 Analyzing Name Bot name: ${normalizedName}`);
+        console.log(`[${channelId}] 🔄 Analyzing Name: ${normalizedName}`);
         
         let shouldCatch = globalState.catchAll;
         if (!shouldCatch) {
@@ -360,18 +334,17 @@ async function handlePokemonMessage(message) {
             return;
         }
         
-        // --- APLICAR ALIAS ---
         const nameToSend = getCatchNameAlias(normalizedName);
         
         state.pokemon = normalizedName;
         state.attempts = 1;
         state.waitingForName = false;
         
-        // Aplicar retraso para el comando
+
         await delay(config.settings.reactionTime);
 
         try {
-            console.log(`[${channelId}] 🎣 Catching ${normalizedName} as '${nameToSend}' (Name Bot)`);
+            console.log(`[${channelId}] 🎣 Catching ${normalizedName} as '${nameToSend}' (NameBots)`);
             await message.channel.send(`<@${config.POKETWO_ID}> c ${nameToSend}`);
         } catch (error) {
             console.error(`[${channelId}] ❌ Error sending capture message: ${error.message}`);
@@ -409,10 +382,9 @@ async function handlePokemonMessage(message) {
         return;
     }
 
-    // --- 6. RESPUESTA DE HINT DE POKETWO (Lógica original + Alias) ---
     if (message.author.id === config.POKETWO_ID && message.content.includes("The pokémon is")) {
         if (state.pokemon) return;
-        // La versión original usaba esta firma de solveHint
+
         const [pokemonName] = await solveHint(message); 
         if (!pokemonName) {
             console.log(`[${channelId}] ⚠️ Could not solve hint message.`);
@@ -435,7 +407,6 @@ async function handlePokemonMessage(message) {
             return;
         }
         
-        // --- APLICAR ALIAS ---
         const nameToSend = getCatchNameAlias(normalizedName);
         
         state.pokemon = normalizedName;
@@ -456,7 +427,6 @@ async function handlePokemonMessage(message) {
         return;
     }
 
-    // --- 7. CAPTURA EXITOSA (Lógica original) ---
     if (message.author.id === config.POKETWO_ID &&
         (message.content.includes("Congratulations") || message.content.includes("You caught a"))) {
         if (!state.pokemon) return;
