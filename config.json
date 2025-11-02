@@ -1,15 +1,21 @@
 {
   "TOKEN": "YOU_TOKEN_HERE",
   "OwnerIDs": ["YOU_ID_HERE"],
+  
   "POKETWO_ID": "716390085896962058",
   "nameBots": ["874910942490677270","854233015475109888"],
+
+
+  "errorChannel": "",
   "spamChannel": "",
   "logChannel": "",
+
+  
   "settings": {
-    "maxAttempts": 4,
+    "maxAttempts": 2,
     "reactionTime": 2500,
     "channelTimeout": 35000,
-    "itemsPerPage": 25,
+    "itemsPerPage": 15,
     "nameWaitTime": 10000,
     "spamMinDelay": 1500,
     "spamMaxDelay": 3000
@@ -18,6 +24,5 @@
   "allowedServers": [],
   "catchAll": true,
   "spamming": false,
-  "errorChannel": "",
   "paused": false
 }
