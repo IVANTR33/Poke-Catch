@@ -36,14 +36,8 @@ function stopSpam() {
 }
 
 const client = new Discord.Client({
-    checkUpdate: false,
-    intents: [
-        Discord.Intents.FLAGS.GUILDS,
-        Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.DIRECT_MESSAGES,
-        Discord.Intents.FLAGS.GUILD_MEMBERS,
-        Discord.Intents.FLAGS.GUILD_PRESENCES
-    ]
+    checkUpdate: false
+    // Se eliminó la propiedad 'intents' para evitar el DeprecationWarning
 });
 
 client.on("ready", () => {
@@ -83,7 +77,8 @@ client.on("ready", () => {
 ╠════════════════════════════════════════════╣
 ║   ℹ️ Auto-Catcher v2.0 - Catch Pokemon
 ║   🔹 Type: Custom list Selfbot
-║   🔹 refix (!)  Write:  ( !help )
+║   🔹 Discord_Contact: Ivantree9096
+║   🔹 Prefix (!)  Write:  ( !help )
 ╚════════════════════════════════════════════╝
     `);
 });
