@@ -83,7 +83,7 @@ client.on("ready", () => {
 ╠════════════════════════════════════════════╣
 ║   ℹ️ Auto-Catcher v2.0 - Catch Pokemon
 ║   🔹 Type: Custom list Selfbot
-║   🔹 Configured Delay: ${config.settings.reactionTime}ms
+║   🔹 refix (!)  Write:  ( !help )
 ╚════════════════════════════════════════════╝
     `);
 });
