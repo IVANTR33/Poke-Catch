@@ -37,7 +37,6 @@ function stopSpam() {
 
 const client = new Discord.Client({
     checkUpdate: false
-    // Se eliminó la propiedad 'intents' para evitar el DeprecationWarning
 });
 
 client.on("ready", () => {
