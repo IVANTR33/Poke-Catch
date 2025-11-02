@@ -157,14 +157,24 @@
         "Arōranosugata",
         "Alolan Rattata",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "コラッタ",
+        "Koratta",
+        "Rattata",
+        "Rattfratz",
+        "Rattata"
     ],
     "Alolan Raticate": [
         "アローラのすがた",
         "Arōranosugata",
         "Alolan Raticate",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "ラッタ",
+        "Ratta",
+        "Raticate",
+        "Rattikarl",
+        "Rattatac"
     ],
     "Spearow": [
         "オニスズメ",
@@ -192,38 +202,30 @@
     "Arbok": [
         "アーボック",
         "Ābokku",
-        "Arbok",
-        "Arbok",
-        "Arbok",
         "Arbok"
     ],
     "Pikachu": [
         "ピカチュウ",
         "Pikachū",
-        "Pikachu",
-        "Pikachu",
-        "Pikachu",
         "Pikachu"
     ],
     "Partner Pikachu": [
         "Partner Pikachu",
-        "Partner Pikachu",
+        "Pikachu",
         "Pikachu Partenaire"
     ],
     "Raichu": [
         "ライチュウ",
         "Raichū",
         "Raichu",
-        "Raichu",
-        "Raichu",
-        "Raichu"
     ],
     "Alolan Raichu": [
         "アローラのすがた",
         "Arōranosugata",
         "Alolan Raichu",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "Raichu"
     ],
     "Sandshrew": [
         "サンド",
@@ -238,7 +240,13 @@
         "Arōranosugata",
         "Alolan Sandshrew",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "サンド",
+        "Sando",
+        "Sand",
+        "Sandshrew",
+        "Sandan",
+        "Sabelette"
     ],
     "Sandslash": [
         "サンドパン",
@@ -253,7 +261,13 @@
         "Arōranosugata",
         "Alolan Sandslash",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "サンドパン",
+        "Sandopan",
+        "Sandpan",
+        "Sandslash",
+        "Sandamer",
+        "Sablaireau"
     ],
     "Nidoran♀️": [
         "ニドラン♀",
@@ -262,37 +276,24 @@
     "Nidorina": [
         "ニドリーナ",
         "Nidorīna",
-        "Nidorina",
-        "Nidorina",
-        "Nidorina",
         "Nidorina"
     ],
     "Nidoqueen": [
         "ニドクイン",
         "Nidokuin",
-        "Nidoqueen",
-        "Nidoqueen",
-        "Nidoqueen",
         "Nidoqueen"
     ],
     "Nidoran♂️": [
-        "ニドラン♂",
         "Nidoran"
     ],
     "Nidorino": [
         "ニドリーノ",
         "Nidorīno",
-        "Nidorino",
-        "Nidorino",
-        "Nidorino",
         "Nidorino"
     ],
     "Nidoking": [
         "ニドキング",
         "Nidokingu",
-        "Nidoking",
-        "Nidoking",
-        "Nidoking",
         "Nidoking"
     ],
     "Clefairy": [
@@ -321,7 +322,11 @@
         "Arōranosugata",
         "Alolan Vulpix",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "ロコン",
+        "Rokon",
+        "Vulpix",
+        "Goupix"
     ],
     "Ninetales": [
         "キュウコン",
@@ -336,7 +341,13 @@
         "Arōranosugata",
         "Alolan Ninetales",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "キュウコン",
+        "Kyūkon",
+        "Kyukon",
+        "Ninetales",
+        "Vulnona",
+        "Feunard"
     ],
     "Jigglypuff": [
         "プリン",
@@ -426,7 +437,13 @@
         "Arōranosugata",
         "Alolan Diglett",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "ディグダ",
+        "Diguda",
+        "Digda",
+        "Diglett",
+        "Digda",
+        "Taupiqueur"
     ],
     "Dugtrio": [
         "ダグトリオ",
@@ -440,7 +457,12 @@
         "Arōranosugata",
         "Alolan Dugtrio",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "ダグトリオ",
+        "Dagutorio",
+        "Dugtrio",
+        "Digdri",
+        "Triopikeur"
     ],
     "Meowth": [
         "ニャース",
@@ -455,10 +477,22 @@
         "Arōranosugata",
         "Alolan Meowth",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "ニャース",
+        "Nyāsu",
+        "Nyarth",
+        "Meowth",
+        "Mauzi",
+        "Miaouss"
     ],
     "Galarian Meowth": [
-        "Galarian Meowth"
+        "Galarian Meowth",
+        "ニャース",
+        "Nyāsu",
+        "Nyarth",
+        "Meowth",
+        "Mauzi",
+        "Miaouss"
     ],
     "Persian": [
         "ペルシアン",
@@ -473,7 +507,13 @@
         "Arōranosugata",
         "Alolan Persian",
         "Alola-Form",
-        "Forme d'Alola"
+        "Forme d'Alola",
+        "ペルシアン",
+        "Perushian",
+        "Persian",
+        "Persian",
+        "Snobilikat",
+        "Persian"
     ],
     "Psyduck": [
         "コダック",
@@ -514,7 +554,12 @@
     ],
     "Hisuian Growlithe": [
         "Hisuian Growlithe",
-        "Growlithe"
+        "ガーディ",
+        "Gādi",
+        "Gardie",
+        "Growlithe",
+        "Fukano",
+        "Caninos"
     ],
     "Arcanine": [
         "ウインディ",
@@ -526,7 +571,12 @@
     ],
     "Hisuian Arcanine": [
         "Hisuian Arcanine",
-        "Arcanine"
+        "ウインディ",
+        "Uindi",
+        "Windie",
+        "Arcanine",
+        "Arkani",
+        "Arcanin"
     ],
     "Poliwag": [
         "ニョロモ",
@@ -642,7 +692,12 @@
         "Alolan Geodude",
         "Alola-Form",
         "Forme d'Alola",
-        "Geodude"
+        "イシツブテ",
+        "Ishitsubute",
+        "Isitsubute",
+        "Geodude",
+        "Kleinstein",
+        "Racaillou"
     ],
     "Graveler": [
         "ゴローン",
@@ -658,7 +713,12 @@
         "Alolan Graveler",
         "Alola-Form",
         "Forme d'Alola",
-        "Graveler"
+        "ゴローン",
+        "Gorōn",
+        "Golone",
+        "Graveler",
+        "Georok",
+        "Gravalanch"
     ],
     "Golem": [
         "ゴローニャ",
@@ -674,7 +734,12 @@
         "Alolan Golem",
         "Alola-Form",
         "Forme d'Alola",
-        "Golem"
+        "ゴローニャ",
+        "Gorōnya",
+        "Golonya",
+        "Golem",
+        "Geowaz",
+        "Grolem"
     ],
     "Ponyta": [
         "ポニータ",
@@ -683,8 +748,10 @@
         "Ponita"
     ],
     "Galarian Ponyta": [
-        "Galarian Ponyta",
-        "Ponita"
+        "ポニータ",
+        "Ponīta",
+        "Ponyta",
+        "Ponita
     ],
     "Rapidash": [
         "ギャロップ",
@@ -695,8 +762,12 @@
         "Galopa"
     ],
     "Galarian Rapidash": [
-        "Galarian Rapidash",
-        "Rapidash"
+        "ギャロップ",
+        "Gyaroppu",
+        "Gallop",
+        "Rapidash",
+        "Gallopa",
+        "Galopa
     ],
     "Slowpoke": [
         "ヤドン",
@@ -707,7 +778,11 @@
     ],
     "Galarian Slowpoke": [
         "Galarian Slowpoke",
-        "Slowpoke"
+        "ヤドン",
+        "Yadon",
+        "Slowpoke",
+        "Flegmon",
+        "Ramoloss"
     ],
     "Slowbro": [
         "ヤドラン",
@@ -718,7 +793,11 @@
     ],
     "Galarian Slowbro": [
         "Galarian Slowbro",
-        "Slowbro"
+        "ヤドラン",
+        "Yadoran",
+        "Slowbro",
+        "Lahmus",
+        "Flagadoss"
     ],
     "Magnemite": [
         "コイル",
@@ -732,9 +811,7 @@
         "レアコイル",
         "Reakoiru",
         "Rarecoil",
-        "Magneton",
-        "Magneton",
-        "Magnéton"
+        "Magneton"
     ],
     "Farfetch'd": [
         "カモネギ",
@@ -756,14 +833,12 @@
         "Dōdō",
         "Dodo",
         "Doduo",
-        "Dodu",
-        "Doduo"
+        "Dodu"
     ],
     "Dodrio": [
         "ドードリオ",
         "Dōdorio",
         "Dodorio",
-        "Dodrio",
         "Dodri",
         "Dodrio"
     ],
@@ -796,7 +871,12 @@
         "Alolan Grimer",
         "Alola-Form",
         "Forme d'Alola",
-        "Grimer"
+        "ベトベター",
+        "Betobetā",
+        "Betbeter",
+        "Grimer",
+        "Sleima",
+        "Tadmorv"
     ],
     "Muk": [
         "ベトベトン",
@@ -809,15 +889,19 @@
     "Alolan Muk": [
         "アローラのすがた",
         "Arōranosugata",
-        "Muk",
         "Alolan Muk",
         "Alola-Form",
         "Forme d'Alola"
+        "ベトベトン",
+        "Betobeton",
+        "Betbeton",
+        "Muk",
+        "Sleimok",
+        "Grotadmorv"
     ],
     "Shellder": [
         "シェルダー",
         "Sherudā",
-        "Shellder",
         "Shellder",
         "Muschas",
         "Kokiyas"
@@ -850,8 +934,6 @@
         "ゲンガー",
         "Gengā",
         "Gangar",
-        "Gengar",
-        "Gengar",
         "Ectoplasma"
     ],
     "Onix": [
@@ -1232,81 +1314,97 @@
     ],
     "Unown A": [
         "Unown A",
+        "Unown",
         "Icognito A",
         "Zarbi A"
     ],
     "Unown B": [
         "Unown B",
+        "Unown",
         "Icognito B",
         "Zarbi B"
     ],
     "Unown C": [
         "Unown C",
+        "Unown",
         "Icognito C",
         "Zarbi C"
     ],
     "Unown D": [
         "Unown D",
+        "Unown",
         "Icognito D",
         "Zarbi D"
     ],
     "Unown E": [
         "Unown E",
+        "Unown",
         "Icognito E",
         "Zarbi E"
     ],
     "Unown G": [
         "Unown G",
+        "Unown",
         "Icognito G",
         "Zarbi G"
     ],
     "Unown H": [
         "Unown H",
+        "Unown",
         "Icognito H",
         "Zarbi H"
     ],
     "Unown I": [
         "Unown I",
+        "Unown",
         "Icognito I",
         "Zarbi I"
     ],
     "Unown J": [
         "Unown J",
+        "Unown",
         "Icognito J",
         "Zarbi J"
     ],
     "Unown K": [
         "Unown K",
+        "Unown",
         "Icognito K",
         "Zarbi K"
     ],
     "Unown L": [
         "Unown L",
+        "Unown",
         "Icognito L",
         "Zarbi L"
     ],
     "Unown M": [
         "Unown M",
+        "Unown",
         "Icognito M",
         "Zarbi M"
     ],
     "Unown N": [
         "Unown N",
+        "Unown",
         "Icognito N",
         "Zarbi N"
     ],
     "Unown O": [
         "Unown O",
+        "Unown",
         "Icognito O",
         "Zarbi O"
     ],
     "Unown P": [
         "Unown P",
+        "Unown",
         "Icognito P",
         "Zarbi P"
     ],
     "Unown Q": [
         "Unown Q",
+        "Unown",
         "Icognito Q",
         "Zarbi Q"
     ],
@@ -1317,41 +1415,49 @@
     ],
     "Unown S": [
         "Unown S",
+        "Unown",
         "Icognito S",
         "Zarbi S"
     ],
     "Unown T": [
         "Unown T",
+        "Unown",
         "Icognito T",
         "Zarbi T"
     ],
     "Unown U": [
         "Unown U",
+        "Unown",
         "Icognito U",
         "Zarbi U"
     ],
     "Unown V": [
         "Unown V",
+        "Unown",
         "Icognito V",
         "Zarbi V"
     ],
     "Unown W": [
         "Unown W",
+        "Unown",
         "Icognito W",
         "Zarbi W"
     ],
     "Unown X": [
         "Unown X",
+        "Unown",
         "Icognito X",
         "Zarbi X"
     ],
     "Unown Y": [
         "Unown Y",
+        "Unown",
         "Icognito Y",
         "Zarbi Y"
     ],
     "Unown Z": [
         "Unown Z",
+        "Unown",
         "Icognito Z",
         "Zarbi Z"
     ],
