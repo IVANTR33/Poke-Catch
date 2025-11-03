@@ -1,8 +1,9 @@
 // utils.js
 const fs = require('fs');
 const path = require('path');
+const { configPath } = require('./config'); // Asegurarse de que configPath esté accesible o se defina aquí.
 
-//==============================
+
 async function reportError(errorMsg, client, config) {
     if (config.errorChannel && client) {
         try {
@@ -19,15 +20,17 @@ async function reportError(errorMsg, client, config) {
     console.error('[ERROR]', errorMsg);
 }
 
-//============================
+
 function saveConfig(config) {
     try {
-        const configPath = path.join(__dirname, 'config.json');
-        // Usando 2 espacios para formato
-        fs.writeFileSync(configPath, JSON.stringify(config, null, 2)); 
-        console.log('[CONFIG] Configuración guardada con éxito.');
+        
+        const configPathLocal = path.join(__dirname, 'config.json'); 
+        
+        
+        fs.writeFileSync(configPathLocal, JSON.stringify(config, null, 2)); 
+        console.log('[CONFIG] Configuration saved successfully.');
     } catch (error) {
-        console.error('[ERROR] Falló al guardar la configuración:', error.message);
+        console.error('[ERROR] Failed to save settings:', error.message);
     }
 }
 
@@ -42,9 +45,9 @@ function pickRandom(arr) {
 }
 
 module.exports = {
+    reportError,
+    saveConfig,
     delay,
     getRandomInt,
-    pickRandom,
-    reportError,
-    saveConfig
+    pickRandom
 };
