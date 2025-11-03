@@ -270,7 +270,7 @@
         "Sablaireau"
     ],
     "Nidoran♀️": [
-        "ニドラン♀",
+        "ニドラン",
         "Nidoran"
     ],
     "Nidorina": [
@@ -284,7 +284,8 @@
         "Nidoqueen"
     ],
     "Nidoran♂️": [
-        "Nidoran"
+        "Nidoran",
+        "ニドラン"
     ],
     "Nidorino": [
         "ニドリーノ",
@@ -1585,7 +1586,13 @@
         "Farfuret"
     ],
     "Hisuian Sneasel": [
-        "Hisuian Sneasel"
+        "Hisuian Sneasel",
+        "ニューラ",
+        "Nyūra",
+        "Nyula",
+        "Sneasel",
+        "Sniebel",
+        "Farfuret"
     ],
     "Teddiursa": [
         "ヒメグマ",
@@ -1611,7 +1618,6 @@
         "マグカルゴ",
         "Magukarugo",
         "Magcargot",
-        "Magcargo",
         "Magcargo",
         "Volcaropod"
     ],
@@ -1653,15 +1659,12 @@
         "Teppōō",
         "Teppouo",
         "Remoraid",
-        "Remoraid",
         "Rémoraid"
     ],
     "Octillery": [
         "オクタン",
         "Okutan",
         "Okutank",
-        "Octillery",
-        "Octillery",
         "Octillery"
     ],
     "Delibird": [
@@ -1714,7 +1717,6 @@
         "ゴマゾウ",
         "Gomazō",
         "Gomazou",
-        "Phanpy",
         "Phanpy"
     ],
     "Donphan": [
@@ -1754,7 +1756,6 @@
         "Kapoerā",
         "Kapoerer",
         "Hitmontop",
-        "Kapoera",
         "Kapoera"
     ],
     "Smoochum": [
@@ -1935,7 +1936,12 @@
         "Zigzaton"
     ],
     "Galarian Zigzagoon": [
-        "Galarian Zigzagoon"
+        "Galarian Zigzagoon",
+        "ジグザグマ",
+        "Jiguzaguma",
+        "Zigzagoon",
+        "Zigzachs",
+        "Zigzaton"
     ],
     "Linoone": [
         "マッスグマ",
@@ -1945,7 +1951,12 @@
         "Linéon"
     ],
     "Galarian Linoone": [
-        "Galarian Linoone"
+        "Galarian Linoone",
+        "マッスグマ",
+        "Massuguma",
+        "Linoone",
+        "Geradaks",
+        "Linéon"
     ],
     "Wurmple": [
         "ケムッソ",
@@ -1998,7 +2009,6 @@
         "ハスブレロ",
         "Hasuburero",
         "Hasubrero",
-        "Lombre",
         "Lombrero",
         "Lombre"
     ],
@@ -2065,7 +2075,6 @@
         "ラルトス",
         "Rarutosu",
         "Ralts",
-        "Ralts",
         "Trasla",
         "Tarsal"
     ],
@@ -2079,8 +2088,7 @@
         "Sānaito",
         "Sirnight",
         "Gardevoir",
-        "Guardevoir",
-        "Gardevoir"
+        "Guardevoir"
     ],
     "Surskit": [
         "アメタマ",
@@ -2286,14 +2294,11 @@
         "Purasuru",
         "Prasle",
         "Plusle",
-        "Plusle",
         "Posipi"
     ],
     "Minun": [
         "マイナン",
         "Mainan",
-        "Minun",
-        "Minun",
         "Minun",
         "Négapi"
     ],
@@ -2301,7 +2306,6 @@
         "バルビート",
         "Barubīto",
         "Barubeat",
-        "Volbeat",
         "Volbeat",
         "Muciole"
     ],
@@ -2336,7 +2340,6 @@
         "キバニア",
         "Kibania",
         "Kibanha",
-        "Carvanha",
         "Kanivanha",
         "Carvanha"
     ],
@@ -2344,7 +2347,6 @@
         "サメハダー",
         "Samehadā",
         "Samehader",
-        "Sharpedo",
         "Tohaido",
         "Sharpedo"
     ],
@@ -2421,14 +2423,12 @@
         "フライゴン",
         "Furaigon",
         "Flygon",
-        "Flygon",
         "Libelldra",
         "Libégon"
     ],
     "Cacnea": [
         "サボネア",
         "Sabonea",
-        "Cacnea",
         "Tuska",
         "Cacnea"
     ],
@@ -2436,7 +2436,6 @@
         "ノクタス",
         "Nokutasu",
         "Noctus",
-        "Cacturne",
         "Noktuska",
         "Cacturne"
     ],
@@ -2617,7 +2616,6 @@
         "Jupetta",
         "Juppeta",
         "Banette",
-        "Banette",
         "Branette"
     ],
     "Duskull": [
@@ -2653,9 +2651,6 @@
     "Deoxys": [
         "デオキシス",
         "Deokishisu",
-        "Deoxys",
-        "Deoxys",
-        "Deoxys",
         "Deoxys"
     ],
     "Attack Deoxys": [
@@ -2701,7 +2696,6 @@
         "ドダイトス",
         "Dodaitosu",
         "Dodaitose",
-        "Torterra",
         "Chelterrar",
         "Torterra"
     ],
@@ -2762,7 +2756,6 @@
         "ムクバード",
         "Mukubādo",
         "Mukubird",
-        "Staravia",
         "Staravia",
         "Étourvol"
     ],
@@ -2867,7 +2860,6 @@
         "トリデプス",
         "Toridepusu",
         "Torideps",
-        "Bastiodon",
         "Bollterus",
         "Bastiodon"
     ],
@@ -2966,13 +2958,18 @@
         "チェリム",
         "Cherimu",
         "Cherrim",
-        "Cherrim",
         "Overcast Cherrim",
         "Kinoso",
         "Ceriflor"
     ],
     "Sunshine Cherrim": [
-        "Sunshine Cherrim"
+        "Sunshine Cherrim",
+        "チェリム",
+        "Cherimu",
+        "Cherrim",
+        "Overcast Cherrim",
+        "Kinoso",
+        "Ceriflor"
     ],
     "Shellos": [
         "カラナクシ",
@@ -2983,7 +2980,13 @@
         "Sancoki"
     ],
     "East Sea Shellos": [
-        "East Sea Shellos"
+        "East Sea Shellos",
+        "カラナクシ",
+        "Karanakushi",
+        "Shellos",
+        "West Sea Shellos",
+        "Schalellos",
+        "Sancoki"
     ],
     "Gastrodon": [
         "トリトドン",
@@ -2995,7 +2998,14 @@
         "Tritosor"
     ],
     "East Sea Gastrodon": [
-        "East Sea Gastrodon"
+        "East Sea Gastrodon",
+        "トリトドン",
+        "Toritodon",
+        "Tritodon",
+        "Gastrodon",
+        "West Sea Gastrodon",
+        "Gastrodon",
+        "Tritosor"
     ],
     "Ambipom": [
         "エテボース",
@@ -3176,25 +3186,16 @@
     "Riolu": [
         "リオル",
         "Rioru",
-        "Riolu",
-        "Riolu",
-        "Riolu",
         "Riolu"
     ],
     "Lucario": [
         "ルカリオ",
         "Rukario",
-        "Lucario",
-        "Lucario",
-        "Lucario",
         "Lucario"
     ],
     "Hippopotas": [
         "ヒポポタス",
         "Hipopotasu",
-        "Hippopotas",
-        "Hippopotas",
-        "Hippopotas",
         "Hippopotas"
     ],
     "Hippowdon": [
@@ -3249,7 +3250,6 @@
         "Keikōō",
         "Keikouo",
         "Finneon",
-        "Finneon",
         "Écayon"
     ],
     "Lumineon": [
@@ -3294,8 +3294,6 @@
         "ジバコイル",
         "Jibakoiru",
         "Jibacoil",
-        "Magnezone",
-        "Magnezone",
         "Magnézone"
     ],
     "Lickilicky": [
@@ -3311,7 +3309,6 @@
         "Dosaidon",
         "Dosidon",
         "Rhyperior",
-        "Rihornior",
         "Rhinastoc"
     ],
     "Tangrowth": [
@@ -3341,16 +3338,11 @@
     "Togekiss": [
         "トゲキッス",
         "Togekissu",
-        "Togekiss",
-        "Togekiss",
-        "Togekiss",
         "Togekiss"
     ],
     "Yanmega": [
         "メガヤンマ",
         "Megayanma",
-        "Yanmega",
-        "Yanmega",
         "Yanmega"
     ],
     "Leafeon": [
@@ -3388,9 +3380,6 @@
     "Porygon-Z": [
         "ポリゴンＺ",
         "Porigonz",
-        "Porygon-Z",
-        "Porygon-Z",
-        "Porygon-Z",
         "Porygon-Z"
     ],
     "Gallade": [
@@ -3434,6 +3423,7 @@
     "Heat Rotom": [
         "ヒートロトム",
         "Hītorotomu",
+        "Rotom",
         "Heat Rotom",
         "Hitze-Rotom",
         "Motisma Chaleur"
@@ -3442,6 +3432,7 @@
         "ウォッシュロトム",
         "Wosshurotomu",
         "Wash Rotom",
+        "Rotom",
         "Wasch-Rotom",
         "Motisma Lavage"
     ],
@@ -3449,6 +3440,7 @@
         "フロストロトム",
         "Furosutorotomu",
         "Frost Rotom",
+        "Rotom",
         "Frost-Rotom",
         "Motisma Froid"
     ],
@@ -3456,6 +3448,7 @@
         "スピンロトム",
         "Supinrotomu",
         "Fan Rotom",
+        "Rotom",
         "Wirbel-Rotom",
         "Motisma Hélice"
     ],
@@ -3463,18 +3456,22 @@
         "カットロトム",
         "Kattorotomu",
         "Mow Rotom",
+        "Rotom",
         "Schneid-Rotom",
         "Motisma Tonte"
     ],
     "Rotom Pokédex": [
         "Rotom Pokédex",
+        "Rotom",
         "Rotom Dex"
     ],
     "Rotom Phone": [
-        "Rotom Phone"
+        "Rotom Phone",
+        "Rotom"
     ],
     "Rotom Drone": [
         "Rotom Drone"
+        "Rotom"
     ],
     "Uxie": [
         "ユクシー",
@@ -3503,64 +3500,40 @@
     "Dialga": [
         "ディアルガ",
         "Diaruga",
-        "Dialga",
-        "Dialga",
-        "Dialga",
         "Dialga"
     ],
     "Palkia": [
         "パルキア",
         "Parukia",
-        "Palkia",
-        "Palkia",
-        "Palkia",
         "Palkia"
     ],
     "Heatran": [
         "ヒードラン",
         "Hīdoran",
-        "Heatran",
-        "Heatran",
-        "Heatran",
         "Heatran"
     ],
     "Regigigas": [
         "レジギガス",
         "Rejigigasu",
-        "Regigigas",
-        "Regigigas",
-        "Regigigas",
         "Regigigas"
     ],
     "Giratina": [
         "ギラティナ",
-        "Giratina",
-        "Giratina",
-        "Giratina",
         "Giratina"
     ],
     "Cresselia": [
         "クレセリア",
         "Kureseria",
-        "Cresselia",
-        "Cresselia",
-        "Cresselia",
         "Cresselia"
     ],
     "Phione": [
         "フィオネ",
         "Fione",
-        "Phione",
-        "Phione",
-        "Phione",
         "Phione"
     ],
     "Manaphy": [
         "マナフィ",
         "Manafi",
-        "Manaphy",
-        "Manaphy",
-        "Manaphy",
         "Manaphy"
     ],
     "Darkrai": [
@@ -3573,78 +3546,119 @@
     ],
     "Shaymin": [
         "シェイミ",
-        "Sheimi",
-        "Shaymin",
-        "Shaymin",
-        "Shaymin",
+        "Sheimi",,
         "Shaymin"
     ],
     "Arceus": [
         "アルセウス",
         "Aruseusu",
-        "Arceus",
-        "Arceus",
-        "Normal Arceus",
-        "Arceus",
         "Arceus"
     ],
     "Bug Arceus": [
-        "Bug Arceus"
+        "Bug Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Dark Arceus": [
-        "Dark Arceus"
+        "Dark Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Dragon Arceus": [
-        "Dragon Arceus"
+        "Dragon Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Electric Arceus": [
-        "Electric Arceus"
+        "Electric Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Fighting Arceus": [
-        "Fighting Arceus"
+        "Fighting Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Fire Arceus": [
-        "Fire Arceus"
+        "Fire Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Flying Arceus": [
-        "Flying Arceus"
+        "Flying Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Ghost Arceus": [
-        "Ghost Arceus"
+        "Ghost Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Grass Arceus": [
-        "Grass Arceus"
+        "Grass Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Ground Arceus": [
-        "Ground Arceus"
+        "Ground Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Ice Arceus": [
-        "Ice Arceus"
+        "Ice Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Poison Arceus": [
-        "Poison Arceus"
+        "Poison Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Psychic Arceus": [
-        "Psychic Arceus"
+        "Psychic Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Rock Arceus": [
-        "Rock Arceus"
+        "Rock Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Steel Arceus": [
-        "Steel Arceus"
+        "Steel Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Water Arceus": [
-        "Water Arceus"
+        "Water Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Fairy Arceus": [
-        "Fairy Arceus"
+        "Fairy Arceus",
+        "アルセウス",
+        "Aruseusu",
+        "Arceus"
     ],
     "Victini": [
         "ビクティニ",
         "Bikutini",
-        "Victini",
-        "Victini",
-        "Victini",
         "Victini"
     ],
     "Snivy": [
@@ -3716,7 +3730,12 @@
         "Clamiral"
     ],
     "Hisuian Samurott": [
-        "Hisuian Samurott"
+        "Hisuian Samurott",
+        "ダイケンキ",
+        "Daikenki",
+        "Samurott",
+        "Admurai",
+        "Clamiral"
     ],
     "Patrat": [
         "ミネズミ",
@@ -3977,7 +3996,13 @@
         "Fragilady"
     ],
     "Hisuian Lilligant": [
-        "Hisuian Lilligant"
+        "Hisuian Lilligant",
+        "ドレディア",
+        "Doredia",
+        "Dredear",
+        "Lilligant",
+        "Dressella",
+        "Fragilady
     ],
     "Basculin": [
         "バスラオ",
@@ -3992,13 +4017,25 @@
         "Aosujinosugata",
         "Blue-Striped Basculin",
         "Blaulinige Form",
-        "Motif Bleu"
+        "Motif Bleu",
+        "バスラオ",
+        "Basurao",
+        "Bassrao",
+        "Basculin",
+        "Barschuft",
+        "Bargantua"
     ],
     "White-Striped Basculin": [
         "しろすじのすがた",
         "White-Striped Basculin",
         "Weißliniges Barschuft",
-        "Basculin Blanc"
+        "Basculin Blanc",
+        "バスラオ",
+        "Basurao",
+        "Bassrao",
+        "Basculin",
+        "Barschuft",
+        "Bargantua"
     ],
     "Sandile": [
         "メグロコ",
@@ -4032,7 +4069,12 @@
         "Darumarond"
     ],
     "Galarian Darumaka": [
-        "Galarian Darumaka"
+        "Galarian Darumaka",
+        "ダルマッカ",
+        "Darumakka",
+        "Darumaka",
+        "Flampion",
+        "Darumarond"
     ],
     "Darmanitan": [
         "ヒヒダルマ",
@@ -4046,13 +4088,23 @@
         "Darumamōdo",
         "Zen Darmanitan",
         "Trance-Modus",
-        "Mode Transe"
+        "Mode Transe",
+        "ヒヒダルマ",
+        "Hihidaruma",
+        "Darmanitan",
+        "Flampivian",
+        "Darumacho"
     ],
     "Galarian Darmanitan": [
         "Galarian Darmanitan"
     ],
     "Galarian Zen Darmanitan": [
-        "Galarian Zen Darmanitan"
+        "Galarian Zen Darmanitan",
+        "ヒヒダルマ",
+        "Hihidaruma",
+        "Darmanitan",
+        "Flampivian",
+        "Darumacho"
     ],
     "Maractus": [
         "マラカッチ",
@@ -4107,7 +4159,12 @@
         "Tutafeh"
     ],
     "Galarian Yamask": [
-        "Galarian Yamask"
+        "Galarian Yamask",
+        "デスマス",
+        "Desumasu",
+        "Yamask",
+        "Makabaja",
+        "Tutafeh"
     ],
     "Cofagrigus": [
         "デスカーン",
@@ -4167,24 +4224,24 @@
     "Zorua": [
         "ゾロア",
         "Zoroa",
-        "Zorua",
-        "Zorua",
-        "Zorua",
         "Zorua"
     ],
     "Hisuian Zorua": [
-        "Hisuian Zorua"
+        "Hisuian Zorua",
+        "ゾロア",
+        "Zoroa",
+        "Zorua"
     ],
     "Zoroark": [
         "ゾロアーク",
         "Zoroāku",
-        "Zoroark",
-        "Zoroark",
-        "Zoroark",
         "Zoroark"
     ],
     "Hisuian Zoroark": [
-        "Hisuian Zoroark"
+        "Hisuian Zoroark",
+        "ゾロアーク",
+        "Zoroāku",
+        "Zoroark"
     ],
     "Minccino": [
         "チラーミィ",
@@ -4299,13 +4356,31 @@
         "Vivaldaim"
     ],
     "Summer Deerling": [
-        "Summer Deerling"
+        "Summer Deerling",
+        "シキジカ",
+        "Shikijika",
+        "Deerling",
+        "Spring Deerling",
+        "Sesokitz",
+        "Vivaldaim"
     ],
     "Autumn Deerling": [
-        "Autumn Deerling"
+        "Autumn Deerling",
+        "シキジカ",
+        "Shikijika",
+        "Deerling",
+        "Spring Deerling",
+        "Sesokitz",
+        "Vivaldaim"
     ],
     "Winter Deerling": [
-        "Winter Deerling"
+        "Winter Deerling",
+        "シキジカ",
+        "Shikijika",
+        "Deerling",
+        "Spring Deerling",
+        "Sesokitz",
+        "Vivaldaim"
     ],
     "Sawsbuck": [
         "メブキジカ",
@@ -4316,19 +4391,35 @@
         "Haydaim"
     ],
     "Summer Sawsbuck": [
-        "Summer Sawsbuck"
+        "Summer Sawsbuck",
+        "メブキジカ",
+        "Mebukijika",
+        "Sawsbuck",
+        "Spring Sawsbuck",
+        "Kronjuwild",
+        "Haydaim"
     ],
     "Autumn Sawsbuck": [
-        "Autumn Sawsbuck"
+        "Autumn Sawsbuck",
+        "メブキジカ",
+        "Mebukijika",
+        "Sawsbuck",
+        "Spring Sawsbuck",
+        "Kronjuwild",
+        "Haydaim"
     ],
     "Winter Sawsbuck": [
-        "Winter Sawsbuck"
+        "Winter Sawsbuck",
+        "メブキジカ",
+        "Mebukijika",
+        "Sawsbuck",
+        "Spring Sawsbuck",
+        "Kronjuwild",
+        "Haydaim"
     ],
     "Emolga": [
         "エモンガ",
         "Emonga",
-        "Emolga",
-        "Emolga",
         "Emolga"
     ],
     "Karrablast": [
@@ -4566,7 +4657,12 @@
         "Limonde"
     ],
     "Galarian Stunfisk": [
-        "Galarian Stunfisk"
+        "Galarian Stunfisk",
+        "マッギョ",
+        "Maggyo",
+        "Stunfisk",
+        "Flunschlik",
+        "Limonde"
     ],
     "Mienfoo": [
         "コジョフー",
@@ -4645,7 +4741,13 @@
         "Gueriaigle"
     ],
     "Hisuian Braviary": [
-        "Hisuian Braviary"
+        "Hisuian Braviary",
+        "ウォーグル",
+        "Wōguru",
+        "Warrgle",
+        "Braviary",
+        "Washakwil",
+        "Gueriaigle"
     ],
     "Vullaby": [
         "バルチャイ",
@@ -4728,16 +4830,12 @@
         "テラキオン",
         "Terakion",
         "Terrakion",
-        "Terrakion",
-        "Terrakium",
         "Terrakium"
     ],
     "Virizion": [
         "ビリジオン",
         "Birijion",
         "Virizion",
-        "Virizion",
-        "Viridium",
         "Viridium"
     ],
     "Tornadus": [
@@ -4759,17 +4857,11 @@
     "Reshiram": [
         "レシラム",
         "Reshiramu",
-        "Reshiram",
-        "Reshiram",
-        "Reshiram",
         "Reshiram"
     ],
     "Zekrom": [
         "ゼクロム",
         "Zekuromu",
-        "Zekrom",
-        "Zekrom",
-        "Zekrom",
         "Zekrom"
     ],
     "Landorus": [
@@ -4783,25 +4875,16 @@
     "Kyurem": [
         "キュレム",
         "Kyuremu",
-        "Kyurem",
-        "Kyurem",
-        "Kyurem",
         "Kyurem"
     ],
     "Keldeo": [
         "ケルディオ",
         "Kerudio",
-        "Keldeo",
-        "Keldeo",
-        "Keldeo",
         "Keldeo"
     ],
     "Meloetta": [
         "メロエッタ",
         "Meroetta",
-        "Meloetta",
-        "Meloetta",
-        "Meloetta",
         "Meloetta"
     ],
     "Pirouette Meloetta": [
@@ -4809,7 +4892,10 @@
         "Suteppuforumu",
         "Pirouette Meloetta",
         "Tanzform",
-        "Forme Danse"
+        "Forme Danse",
+         "メロエッタ",
+        "Meroetta",
+        "Meloetta"
     ],
     "Genesect": [
         "ゲノセクト",
@@ -4820,7 +4906,13 @@
         "Genesect"
     ],
     "High-speed Flight Configuration Genesect": [
-        "High-speed Flight Configuration Genesect"
+        "High-speed Flight Configuration Genesect",
+        "ゲノセクト",
+        "Genosekuto",
+        "Genesect",
+        "Genesect",
+        "Genesect",
+        "Genesect"
     ],
     "Chespin": [
         "ハリマロン",
@@ -4953,61 +5045,80 @@
         "Prismillon"
     ],
     "Icy Snow Vivillon": [
-        "Icy Snow Vivillon"
+        "Icy Snow Vivillon",
+        "Vivillon"
     ],
     "Polar Vivillon": [
-        "Polar Vivillon"
+        "Polar Vivillon",
+        "Vivillon"
     ],
     "Tundra Vivillon": [
-        "Tundra Vivillon"
+        "Tundra Vivillon",
+        "Vivillon"
     ],
     "Continental Vivillon": [
-        "Continental Vivillon"
+        "Continental Vivillon",
+        "Vivillon"
     ],
     "Garden Vivillon": [
-        "Garden Vivillon"
+        "Garden Vivillon",
+        "Vivillon"
     ],
     "Elegant Vivillon": [
-        "Elegant Vivillon"
+        "Elegant Vivillon",
+        "Vivillon"
     ],
     "Modern Vivillon": [
-        "Modern Vivillon"
+        "Modern Vivillon",
+        "Vivillon"
     ],
     "Marine Vivillon": [
-        "Marine Vivillon"
+        "Marine Vivillon",
+        "Vivillon"
     ],
     "Archipelago Vivillon": [
-        "Archipelago Vivillon"
+        "Archipelago Vivillon",
+        "Vivillon"
     ],
     "High Plain Vivillon": [
-        "High Plain Vivillon"
+        "High Plain Vivillon",
+        "Vivillon"
     ],
     "Sandstorm Vivillon": [
-        "Sandstorm Vivillon"
+        "Sandstorm Vivillon",
+        "Vivillon"
     ],
     "River Vivillon": [
-        "River Vivillon"
+        "River Vivillon",
+        "Vivillon"
     ],
     "Monsoon Vivillon": [
-        "Monsoon Vivillon"
+        "Monsoon Vivillon",
+        "Vivillon"
     ],
     "Savanna Vivillon": [
-        "Savanna Vivillon"
+        "Savanna Vivillon",
+        "Vivillon"
     ],
     "Sun Vivillon": [
-        "Sun Vivillon"
+        "Sun Vivillon",
+        "Vivillon"
     ],
     "Ocean Vivillon": [
-        "Ocean Vivillon"
+        "Ocean Vivillon",
+        "Vivillon"
     ],
     "Jungle Vivillon": [
-        "Jungle Vivillon"
+        "Jungle Vivillon",
+        "Vivillon"
     ],
     "Fancy Vivillon": [
-        "Fancy Vivillon"
+        "Fancy Vivillon",
+        "Vivillon"
     ],
     "Poké Ball Vivillon": [
-        "Poké Ball Vivillon"
+        "Poké Ball Vivillon",
+        "Vivillon"
     ],
     "Litleo": [
         "シシコ",
@@ -5034,21 +5145,37 @@
     ],
     "Yellow Flower Flabébé": [
         "Yellow Flower Flabébé",
+        "フラベベ",
+        "Furabebe",
+        "Flabebe",
+        "Flabébé",
         "Flabébé (Gelb)",
         "Flabébé Jaune"
     ],
     "Orange Flower Flabébé": [
         "Orange Flower Flabébé",
+        "フラベベ",
+        "Furabebe",
+        "Flabebe",
+        "Flabébé",
         "Flabébé (Orange)",
         "Flabébé Orange"
     ],
     "Blue Flower Flabébé": [
         "Blue Flower Flabébé",
+        "フラベベ",
+        "Furabebe",
+        "Flabebe",
+        "Flabébé",
         "Flabébé (Blau)",
         "Flabébé Bleu"
     ],
     "White Flower Flabébé": [
         "White Flower Flabébé",
+        "フラベベ",
+        "Furabebe",
+        "Flabebe",
+        "Flabébé",
         "Flabébé (Weiß)",
         "Flabébé Blanc"
     ],
@@ -5063,16 +5190,28 @@
     ],
     "Yellow Flower Floette": [
         "Yellow Flower Floette",
+        "フラエッテ",
+        "Furaette",
+        "Floette",
+        "Floette",
         "Floette (Gelb)",
         "Floette Jaune"
     ],
     "Orange Flower Floette": [
         "Orange Flower Floette",
+        "フラエッテ",
+        "Furaette",
+        "Floette",
+        "Floette",
         "Floette (Orange)",
         "Floette Orange"
     ],
     "Blue Flower Floette": [
         "Blue Flower Floette",
+        "フラエッテ",
+        "Furaette",
+        "Floette",
+        "Floette",
         "Floette (Blau)",
         "Floette Bleu"
     ],
@@ -5092,21 +5231,37 @@
     ],
     "Yellow Flower Florges": [
         "Yellow Flower Florges",
+        "フラージェス",
+        "Furājesu",
+        "Florges",
+        "Florges",
         "Florges (Gelb)",
         "Florges Jaune"
     ],
     "Orange Flower Florges": [
         "Orange Flower Florges",
+        "フラージェス",
+        "Furājesu",
+        "Florges",
+        "Florges",
         "Florges (Orange)",
         "Florges Orange"
     ],
     "Blue Flower Florges": [
         "Blue Flower Florges",
+        "フラージェス",
+        "Furājesu",
+        "Florges",
+        "Florges",
         "Florges (Blau)",
         "Florges Bleu"
     ],
     "White Flower Florges": [
         "White Flower Florges",
+        "フラージェス",
+        "Furājesu",
+        "Florges",
+        "Florges",
         "Florges (Weiß)",
         "Florges Blanc"
     ],
@@ -5150,16 +5305,20 @@
         "Couafarel"
     ],
     "Heart Trim Furfrou": [
-        "Heart Trim Furfrou"
+        "Heart Trim Furfrou",
+        "Furfrou"
     ],
     "Star Trim Furfrou": [
-        "Star Trim Furfrou"
+        "Star Trim Furfrou",
+        "Furfrou"
     ],
     "Diamond Trim Furfrou": [
-        "Diamond Trim Furfrou"
+        "Diamond Trim Furfrou".
+        "Furfrou"
     ],
     "Debutante Trim Furfrou": [
-        "Debutante Trim Furfrou"
+        "Debutante Trim Furfrou",
+        "Furfrou"
     ],
     "Matron Trim Furfrou": [
         "Matron Trim Furfrou"
