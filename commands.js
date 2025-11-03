@@ -2,11 +2,12 @@
 
 const { pickRandom } = require('./utils');
 const { globalState } = require('./pokemonHandler');
+// Importar todas las variables de config.js, incluyendo las rutas y listas
 const { config, spamMessages, pokemonList, configPath, pokemonListPath } = require('./config'); 
 const fs = require('fs');
 const path = require('path');
 
-// Definition of saveConfig, using configPath from ./config
+// Definición de saveConfig, usando configPath desde ./config
 function saveConfig(currentConfig) {
     fs.writeFileSync(configPath, JSON.stringify(currentConfig, null, 2));
 }
@@ -29,7 +30,7 @@ function showList(page = 1) {
         listStr += `${startIdx + idx + 1}. ${pokemon}\n`;
     });
     // ENGLISH: List summary
-    listStr += `\n**Total: ${pokemonList.length} | **\n`;
+    listStr += `\n**Total: ${pokemonList.length} | Delay: 1500ms**\n`;
     listStr += `**Use !next/!back or !next X/!back X to navigate**`;
     return listStr;
 }
@@ -218,6 +219,7 @@ async function catchAllCommand(config, message, args) {
         
         let localPokemonList = [];
         try {
+            // Recargar la lista, aunque pokemonList debería estar sincronizado
             localPokemonList = JSON.parse(fs.readFileSync(pokemonListPath, 'utf8'));
         } catch (e) {
             console.error("Error reading pokemonListPath:", e);
@@ -234,6 +236,68 @@ async function catchAllCommand(config, message, args) {
 }
 // --- END SERVER COMMAND AND UTILITY FUNCTIONS ---
 
+// --- FACTORY RESET FUNCTION ---
+async function factoryReset(message) {
+    try {
+        // 1. Cargar la configuración actual para preservar datos críticos (nameBots, settings)
+        const currentConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+
+        // 2. Definir los valores de restablecimiento (SOLO las que deben resetearse o ser marcadores)
+        const resetValues = {
+            // CREDENCIALES
+            "TOKEN": "YOU_TOKEN_HERE",       // <-- RESTABLECIDO
+            "OwnerIDs": ["YOU_ID_HERE"],     // <-- RESTABLECIDO
+            
+            // CANALES Y MODOS
+            "errorChannel": "",
+            "spamChannel": "",
+            "logChannel": "",
+            "serverAllMode": true, 
+            "allowedServers": [],
+            "catchAll": true,       
+            "spamming": false,      
+            "paused": false         
+        };
+
+        // 3. Crear el nuevo objeto de configuración combinando los valores preservados y los reseteados
+        const finalResetConfig = {
+            // Preservar valores constantes/esenciales
+            "POKETWO_ID": currentConfig.POKETWO_ID || "716390085896962058", // Preservar o usar default de Pokétwo
+            "nameBots": currentConfig.nameBots || [], // <-- PRESERVADO
+            
+            // Preservar el bloque settings completo
+            "settings": currentConfig.settings, // <-- PRESERVADO
+            
+            // Aplicar los valores de restablecimiento
+            "TOKEN": resetValues.TOKEN,
+            "OwnerIDs": resetValues.OwnerIDs,
+            "errorChannel": resetValues.errorChannel,
+            "spamChannel": resetValues.spamChannel,
+            "logChannel": resetValues.logChannel,
+            "serverAllMode": resetValues.serverAllMode,
+            "allowedServers": resetValues.allowedServers,
+            "catchAll": resetValues.catchAll,
+            "spamming": resetValues.spamming,
+            "paused": resetValues.paused
+        };
+        
+        fs.writeFileSync(configPath, JSON.stringify(finalResetConfig, null, 2));
+
+        // NO se toca pokemon_list.json (Tu lista de Pokémon se mantiene)
+        
+        // 4. Informar y detener el bot
+        // **TEXTO DE RESPUESTA MODIFICADO AQUÍ**
+        await message.reply("⚠️ **❗ FACTORY CONFIG RESET COMPLETE!**\nTOKEN and OwnerIDs have been reset.\nThe bot is shutting down.\nPlease restart the program using \\`node index.js\\` to configure your new TOKEN and OwnerIDs.");
+        console.log("[CRITICAL] Bot is shutting down due to !reset command.");
+        process.exit(0); // Detener el proceso
+        
+    } catch (e) {
+        await message.reply(`❌ **ERROR al realizar el RESET de fábrica:** ${e.message}`);
+        console.error("Error during factory reset:", e);
+    }
+}
+
+
 async function handleCommand(message, prefix) {
     if (!message.content.startsWith(prefix)) return;
     const { OwnerIDs } = require('./config').config;
@@ -247,6 +311,9 @@ async function handleCommand(message, prefix) {
         
         case 'catchall':
             return catchAllCommand(config, message, args);
+
+        case 'reset': 
+            return factoryReset(message); // Llamar a la función de reset de fábrica
         
         case 'error': {
             if (!args.length) {
@@ -428,7 +495,7 @@ async function handleCommand(message, prefix) {
             message.reply(`✅ Log channel set to: <#${logChannelMention.id}>`);
             break;
         }
-case 'resume': {
+        case 'resume': {
             const wasPaused = config.paused;
             
             if (!wasPaused) {
@@ -474,7 +541,7 @@ case 'resume': {
                 }
             } else {
                 // Si la búsqueda del canal falló, pero sí estaba pausado:
-                await message.reply('✅ Sistema reanudado. **Advertencia:** El canal de log no es accesible (ID inválido o canal eliminado), no se pudo reanudar el incienso. Use `!log #channel` para configurar uno válido.');
+                await message.reply('✅ Sistema reanudado. **Advertencia:** El canal de log configurado no es accesible (ID inválido o canal eliminado), no se pudo reanudar el incienso. Use `!log #channel` para configurar uno válido.');
                 console.log(`[WARN] Canal de log configurado pero no accesible. No se pudo reanudar el incienso.`);
             }
 
@@ -585,8 +652,8 @@ case 'resume': {
             const helpMsg1 = [
                 "**🎮 MAIN COMMANDS**",
                 "🔍 **SEARCH & CATCH**",
-                "`!add <pokemon>` → Adds to list. **Example:** `!add Bulbasaur, Charmander` (multiple names separated by comma)", // UPDATED
-                "`!remove <pokemon>` → Removes from list. **Example:** `!remove Bulbasaur, Charmander` (multiple names separated by comma)", // UPDATED
+                "`!add <pokemon>` → Adds to list. **Example:** `!add Bulbasaur, Charmander` ",
+                "`!remove <pokemon>` → Removes from list. **Example:** `!remove Bulbasaur, Charmander` ",
                 "`!catchall on/off` → Catches all (Current: " + (currentCatchMode ? 'ON' : 'OFF') + ")",
                 "",
                 "🌐 **SERVER CONTROL**",
@@ -605,8 +672,9 @@ case 'resume': {
                 "`!spam #channel` → Configures spam",
                 "`!spam on/off` → Activates/deactivates",
                 "`!log #channel` → Configures logs",
-                "`!resume` → Resumes after CAPTCHA",
                 "`!error #channel` → Configures the channel where the bot will send detailed messages of any internal error (permissions, access, etc)",
+                "`!resume` → Resumes after CAPTCHA (Checks if already active)",
+                "`!reset` → **FACTORY CONFIG RESET** (Clears config channels/modes, **credentials**, and shuts down the bot).", // TEXTO DE AYUDA CORREGIDO
                 "",
                 "🟩 **BUTTON INTERACTION**",
                 "`!click <button>` → Directly clicks the most recent Pokétwo button that matches the specified text. Example: `!click Accept`",
@@ -625,8 +693,9 @@ case 'resume': {
             const helpMsg2 = [
                 "",
                 "📌 **EXAMPLES**",
-                "• `!add \"Roaring Moon\", Pikachu, Zekrom` → Adds multiple Pokémon (compound names with quotes or simple names, separated by comma).", // MODIFIED EXAMPLE
-                "• `!remove Charmander, Squirtle` → Removes multiple Pokémon.", // NEW EXAMPLE
+                "• `!add \"Roaring Moon\", Pikachu, Zekrom` → Adds multiple Pokémon (compound names with quotes or simple names, separated by comma).",
+                "• `!remove Charmander, Squirtle` → Removes multiple Pokémon.",
+                "• `!reset` → Clears credentials, configuration channels/modes and shuts down for re-setup.", // EJEMPLO CORREGIDO
                 "• `!next 3` → Jumps to page 3",
                 "• `!c @poketwo pf old` → shows the profile ",
                 "• `!spam #general` → Spam in #general",
