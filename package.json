@@ -1,7 +1,7 @@
 {
   "name": "pokemon-selfbot",
-  "version": "1.0.0",
-  "description": "Selfbot para la captura automática de Pokémon.",
+  "version": "2.8.0",
+  "description": "Selfbot for the automatic capture of Pokémon.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -9,7 +9,9 @@
   "author": "Ivantree9096",
   "license": "ISC",
   "dependencies": {
-    "discord.js-selfbot-v13": "^3.7.0",
-    "pokehint": "^1.4.20"
+    "debug": "^4.4.3",
+    "discord.js-selfbot-v13": "^3.7.1",
+    "pokehint": "^1.4.20",
+    "readline-sync": "^1.4.10"
   }
 }
