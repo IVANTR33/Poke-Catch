@@ -29,7 +29,7 @@ function showList(page = 1) {
         listStr += `${startIdx + idx + 1}. ${pokemon}\n`;
     });
     // ENGLISH: List summary
-    listStr += `\n**Total: ${pokemonList.length} | Delay: 1500ms**\n`;
+    listStr += `\n**Total: ${pokemonList.length} | **\n`;
     listStr += `**Use !next/!back or !next X/!back X to navigate**`;
     return listStr;
 }
@@ -82,8 +82,8 @@ function getListHelpText(config) {
         "--- 📋 Pokémon List Commands ---",
         "**Usage Instructions:**",
         "**Search & Catch:**",
-        "`!add <pokemon>` → Adds a Pokémon to the list. **Example:** `!add Pikachu`",
-        "`!remove <pokemon>` → Removes a Pokémon from the list. **Example:** `!remove Pikachu`",
+        "`!add <pokemon>` → Adds a Pokémon to the list. **Example:** `!add Pikachu, Bulbasaur` (multiple names separated by comma)",
+        "`!remove <pokemon>` → Removes a Pokémon from the list. **Example:** `!remove Pikachu, Bulbasaur` (multiple names separated by comma)",
         "`!catchall on/off` → Catches all Pokémon (Current: " + (currentCatchMode ? 'ON' : 'OFF') + ")",
         "**List Management:**",
         "`!list` → Shows the current list (25/pg).",
@@ -271,22 +271,93 @@ async function handleCommand(message, prefix) {
         }
         case 'add': {
             if (!args.length) return message.reply('❌ You must specify a Pokémon name to add.\n\n' + getListHelpText(config));
-            const pokemonToAdd = formatPokemonName(args.join(' '));
-            if (pokemonList.includes(pokemonToAdd)) return message.reply(`ℹ️ ${pokemonToAdd} is already on the list.`);
-            pokemonList.push(pokemonToAdd);
-            fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
-            message.reply(`✅ ${pokemonToAdd} added. Total: ${pokemonList.length}`);
-            break;
+            
+            const inputString = args.join(' ');
+            const namesToAdd = inputString
+                .split(',')
+                .map(name => name.trim())
+                .filter(name => name.length > 0);
+
+            let addedNames = [];
+            let alreadyInList = [];
+
+            for (const name of namesToAdd) {
+                const formattedName = formatPokemonName(name);
+
+                // Omite si el nombre está vacío después del formato
+                if (!formattedName) continue;
+
+                // Comprueba duplicados y los agrega a la lista principal si no están
+                if (pokemonList.includes(formattedName)) {
+                    alreadyInList.push(formattedName);
+                    continue;
+                }
+
+                pokemonList.push(formattedName);
+                addedNames.push(formattedName);
+            }
+
+            if (addedNames.length > 0) {
+                fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
+
+                let replyMessage = `✅ **${addedNames.length} Pokémon added.**\nAdded: ${addedNames.join(', ')}\n`;
+                if (alreadyInList.length > 0) {
+                     replyMessage += `(Skipped, already in list: ${alreadyInList.join(', ')})\n`;
+                }
+                replyMessage += `Total: **${pokemonList.length}**`;
+                return message.reply(replyMessage);
+
+            } else if (alreadyInList.length > 0) {
+                return message.reply(`ℹ️ All specified Pokémon were already on the list. Total: ${pokemonList.length}`);
+            } else {
+                return message.reply('❌ No valid Pokémon names were provided.');
+            }
         }
         case 'remove': {
             if (!args.length) return message.reply('❌ You must specify a Pokémon name to remove.\n\n' + getListHelpText(config));
-            const pokemonToRemove = formatPokemonName(args.join(' '));
-            const index = pokemonList.indexOf(pokemonToRemove);
-            if (index === -1) return message.reply(`ℹ️ ${pokemonToRemove} is not on the list.`);
-            pokemonList.splice(index, 1);
-            fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
-            message.reply(`✅ ${pokemonToRemove} removed. Total: ${pokemonList.length}`);
-            break;
+
+            const inputString = args.join(' ');
+            const namesToRemove = inputString
+                .split(',')
+                .map(name => name.trim())
+                .filter(name => name.length > 0);
+
+            let removedNames = [];
+            let notInList = [];
+            let listModified = false;
+
+            for (const name of namesToRemove) {
+                const formattedName = formatPokemonName(name);
+
+                if (!formattedName) continue;
+
+                // Encontrar y remover la primera aparición
+                const index = pokemonList.indexOf(formattedName);
+
+                if (index !== -1) {
+                    pokemonList.splice(index, 1); // Remove from list
+                    removedNames.push(formattedName);
+                    listModified = true;
+                } else {
+                    notInList.push(formattedName);
+                }
+            }
+
+            if (listModified) {
+                fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
+
+                let replyMessage = `✅ **${removedNames.length} Pokémon removed.**\nRemoved: ${removedNames.join(', ')}\n`;
+                if (notInList.length > 0) {
+                     replyMessage += `(Skipped, not found: ${notInList.join(', ')})\n`;
+                }
+                replyMessage += `Total: **${pokemonList.length}**`;
+                return message.reply(replyMessage);
+
+            } else if (notInList.length > 0) {
+                return message.reply(`ℹ️ None of the specified Pokémon were on the list. Total: ${pokemonList.length}`);
+            } else {
+                return message.reply('❌ No valid Pokémon names were provided for removal.');
+            }
         }
         case 'list': 
             if (args[0] && args[0].toLowerCase() === 'clear') {
@@ -357,16 +428,32 @@ async function handleCommand(message, prefix) {
             message.reply(`✅ Log channel set to: <#${logChannelMention.id}>`);
             break;
         }
-        case 'resume': {
+case 'resume': {
+            const wasPaused = config.paused;
+            
+            if (!wasPaused) {
+                // Nueva respuesta si no estaba pausado
+                return message.reply('ℹ️ **El sistema ya estaba activo (No Pausado).** No se necesita reanudar.');
+            }
+            
+            // Si sí estaba pausado, proceder a reanudar
             config.paused = false;
             globalState.paused = false;
             saveConfig(config);
             
-            const channel = await client.channels.fetch(config.logChannel);
+            // Verificar si el canal de logs está configurado para evitar el 404
+            if (!config.logChannel) {
+                return message.reply('✅ Sistema reanudado. **Advertencia:** El canal de log no está configurado, no se pudo reanudar el incienso. Use `!log #channel` para configurarlo.');
+            }
+
+            const channel = await client.channels.fetch(config.logChannel).catch(e => {
+                console.error(`[WARN] No se pudo obtener el canal de log ID ${config.logChannel}: ${e.message}`);
+                return null; // Devolver null si falla la búsqueda del canal
+            });
 
             if (channel) {
-                await message.reply('✅ System resumed. Incenses will be resumed in the log channel.');
-                console.log("[INFO] The bot has resumed. Attempting to resume incenses in the log channel.");
+                await message.reply('✅ **Sistema reanudado.** Los inciensos se reanudarán en el canal de logs.');
+                console.log("[INFO] El bot ha reanudado. Intentando reanudar incensos en el canal de log.");
                 try {
                     await channel.send(`<@${config.POKETWO_ID}> inc r all`);
                     setTimeout(async () => {
@@ -386,8 +473,9 @@ async function handleCommand(message, prefix) {
                     console.error(`[${channel.id}] ❌ Could not send the command to resume incenses. Error: ${e.message}`);
                 }
             } else {
-                await message.reply('✅ System resumed. **Warning:** Log channel is not configured, could not resume incense. Use `!log #channel` to configure it.');
-                console.log(`[WARN] Log channel not configured. Could not resume incense.`);
+                // Si la búsqueda del canal falló, pero sí estaba pausado:
+                await message.reply('✅ Sistema reanudado. **Advertencia:** El canal de log no es accesible (ID inválido o canal eliminado), no se pudo reanudar el incienso. Use `!log #channel` para configurar uno válido.');
+                console.log(`[WARN] Canal de log configurado pero no accesible. No se pudo reanudar el incienso.`);
             }
 
             break;
@@ -497,8 +585,8 @@ async function handleCommand(message, prefix) {
             const helpMsg1 = [
                 "**🎮 MAIN COMMANDS**",
                 "🔍 **SEARCH & CATCH**",
-                "`!add <pokemon>` → Adds to list",
-                "`!remove <pokemon>` → Removes from list",
+                "`!add <pokemon>` → Adds to list. **Example:** `!add Bulbasaur, Charmander` (multiple names separated by comma)", // UPDATED
+                "`!remove <pokemon>` → Removes from list. **Example:** `!remove Bulbasaur, Charmander` (multiple names separated by comma)", // UPDATED
                 "`!catchall on/off` → Catches all (Current: " + (currentCatchMode ? 'ON' : 'OFF') + ")",
                 "",
                 "🌐 **SERVER CONTROL**",
@@ -521,9 +609,9 @@ async function handleCommand(message, prefix) {
                 "`!error #channel` → Configures the channel where the bot will send detailed messages of any internal error (permissions, access, etc)",
                 "",
                 "🟩 **BUTTON INTERACTION**",
-                "`!click <button>` → Directly clicks the most recent Pokétwo button that matches the specified text. Example: `!click Accept`", // UPDATED
-                "`!click <number>` → Directly clicks button N (from left to right) of the most recent Pokétwo message with buttons. Example: `!click 1` for the first button (usually Accept), `!click 2` for the second, etc.", // UPDATED
-                "`!click` → Shows the list of all available buttons in recent Pokétwo messages for you to choose one.", // UPDATED
+                "`!click <button>` → Directly clicks the most recent Pokétwo button that matches the specified text. Example: `!click Accept`",
+                "`!click <number>` → Directly clicks button N (from left to right) of the most recent Pokétwo message with buttons. Example: `!click 1` for the first button (usually Accept), `!click 2` for the second, etc.",
+                "`!click` → Shows the list of all available buttons in recent Pokétwo messages for you to choose one.",
                 "`!confirm <number>` → Clicks the selected button from the list shown by !click.",
                 "",
                 "♻ **MIRROR COMMAND**",
@@ -537,7 +625,8 @@ async function handleCommand(message, prefix) {
             const helpMsg2 = [
                 "",
                 "📌 **EXAMPLES**",
-                "• `!add \"Roaring Moon\"` → Compound names",
+                "• `!add \"Roaring Moon\", Pikachu, Zekrom` → Adds multiple Pokémon (compound names with quotes or simple names, separated by comma).", // MODIFIED EXAMPLE
+                "• `!remove Charmander, Squirtle` → Removes multiple Pokémon.", // NEW EXAMPLE
                 "• `!next 3` → Jumps to page 3",
                 "• `!c @poketwo pf old` → shows the profile ",
                 "• `!spam #general` → Spam in #general",
@@ -546,9 +635,9 @@ async function handleCommand(message, prefix) {
                 "• `!server set 1, 5` → **ADDS** the 1st and 5th server for catching.", 
                 "• `!server clear` → Clears the list of assigned servers.", 
                 "• `!list clear` → Clears the Pokémon list.", 
-                "• `!click Accept` → Directly clicks the most recent 'Accept' button from Pokétwo", // UPDATED
-                "• `!click 1` → Clicks the first button (left) of the most recent Pokétwo message", // UPDATED
-                "• `!click` → Shows the list of available buttons to choose from", // UPDATED
+                "• `!click Accept` → Directly clicks the most recent 'Accept' button from Pokétwo",
+                "• `!click 1` → Clicks the first button (left) of the most recent Pokétwo message",
+                "• `!click` → Shows the list of available buttons to choose from",
                 "• `!confirm 1` → Clicks the first option from the list shown by !click",
                 "• `!p pokedex` → Sends `@poketwo pokedex` to the channel",
                 "",
@@ -556,8 +645,8 @@ async function handleCommand(message, prefix) {
                 "🛠️ **Support:** Contact the developer  Ivantree9096"
             ].join('\n');
 
-            message.reply(helpMsg1);
-            message.reply(helpMsg2);
+            await sendLongMessage(message.channel, helpMsg1);
+            await sendLongMessage(message.channel, helpMsg2);
             break;
         }
         default:
