@@ -1,6 +1,6 @@
 // pokemonHandler.js
 
-const { reportError, delay, pickRandom } = require('./utils'); // Se añadieron delay y pickRandom
+const { reportError, delay, pickRandom, saveConfig } = require('./utils'); 
 const { solveHint } = require('pokehint');
 const fs = require('fs');
 const path = require('path');
@@ -9,17 +9,14 @@ let config = require('./config').config;
 let pokemonList = require('./config').pokemonList;
 let pokemonListPath = require('./config').pokemonListPath;
 
-// --- 1. LÓGICA DE ALIAS ALEATORIOS (MODIFICACIÓN AQUÍ) ---
+// --- 1. LÓGICA DE ALIAS ALEATORIOS ---
 
 let pokemonAliases = {};
 try {
-    // Carga el archivo original. Ahora se itera para normalizar las claves.
     const rawAliases = JSON.parse(fs.readFileSync('./pokemon_aliases.json', 'utf8')); 
 
-    // MODIFICACIÓN CLAVE: Normalizar las claves a minúsculas al cargar
     for (const key in rawAliases) {
         if (rawAliases.hasOwnProperty(key)) {
-            // Convierte la clave 'Bulbasaur' a 'bulbasaur' antes de guardarla en el mapa
             const normalizedKey = normalizeAliasKey(key); 
             pokemonAliases[normalizedKey] = rawAliases[key];
         }
@@ -61,8 +58,6 @@ function getCatchNameAlias(standardName) {
     return standardName;
 }
 
-// --- FIN LÓGICA DE ALIAS ALEATORIOS ---
-
 /**
  * Función que define si la captura está permitida **EN ESTE SERVIDOR**.
  */
@@ -87,12 +82,18 @@ let globalState = {
 };
 const channelStates = new Map();
 
+/**
+ * Normaliza el nombre del Pokémon para la comparación.
+ * - Mantiene el guion común (-)
+ * - ELIMINA el guion largo (—)
+ */
 function normalizeName(name) {
     return name
         .toLowerCase()
         .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9\s.'-]/g, '')
+        .replace(/[\u0300-\u036f]/g, '') 
+        // Esta línea mantiene el guion común (-) pero elimina cualquier otro símbolo no alfanumérico.
+        .replace(/[^a-z0-9\s.'-]/g, '') 
         .replace(/\s+/g, ' ')
         .trim();
 }
@@ -121,6 +122,14 @@ function extractPokemonName(content) {
         .trim();
 
     if (!cleanContent) return null;
+
+    // 💡 NUEVA REGLA CRÍTICA: Si se encuentra un guion largo (—), corta la cadena antes de él y elimínalo.
+    // Esto asegura que solo se capture el nombre, eliminando porcentajes o IVs que sigan al guion largo.
+    const longDashIndex = cleanContent.indexOf('—');
+    if (longDashIndex !== -1) {
+        cleanContent = cleanContent.substring(0, longDashIndex).trim();
+    }
+    // FIN NUEVA REGLA
 
     const patterns = [
         /The pokémon is (.+)/i,
@@ -247,7 +256,7 @@ async function handlePokemonMessage(message) {
     const channelId = message.channel.id;
     const state = getChannelState(channelId);
     
-    // --- 2. DETECCIÓN DE CAPTCHA (NUEVO/CORREGIDO) ---
+    // --- 2. DETECCIÓN DE CAPTCHA (CORREGIDO) ---
     const CAPTCHA_TRIGGERS_CONTENT = [
         "Whoa there. Please tell us you're human!",
         "https://verifypoketwo.net/captcha/",
@@ -274,6 +283,10 @@ async function handlePokemonMessage(message) {
         console.log(`[${channelId}] ⚠️ CAPTCHA DETECTED. Bot paused.`);
         console.log(`=====================================================`);
         globalState.paused = true;
+        // 💡 CORRECCIÓN CLAVE: Sincronizar el estado persistente y guardarlo
+        config.paused = true; 
+        saveConfig(config); 
+        // ------------------------------------------------------------------
 
         const channel = message.channel;
         try {
@@ -327,7 +340,7 @@ async function handlePokemonMessage(message) {
         state.lastSpawn = Date.now();
         state.pokemon = null;
         state.attempts = 0;
-        state.waitingForName = true;
+        state.waitingForName = true; 
         state.failedNames = new Set();
         // Espera un tiempo para que el Name Bot responda
         setTimeout(() => {
