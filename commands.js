@@ -3,7 +3,7 @@
 const { pickRandom } = require('./utils');
 const { globalState } = require('./pokemonHandler');
 // Importar todas las variables de config.js, incluyendo las rutas y listas
-const { config, spamMessages, pokemonList, configPath, pokemonListPath } = require('./config'); 
+const { config, spamMessages, pokemonList, configPath, pokemonListPath } = require('./config');
 const fs = require('fs');
 const path = require('path');
 
@@ -55,7 +55,7 @@ async function sendLongMessage(channel, text) {
 
 /** Help text for server commands. */
 function getServerHelpText(config) {
-    const currentServerMode = config.serverAllMode ?? false; 
+    const currentServerMode = config.serverAllMode ?? false;
     let helpText = `--- 🌐 Server Commands ---\n`;
     helpText += `**Server Mode:** \`${currentServerMode ? 'Universal (ON)' : 'Restricted (OFF)'}\`\n\n`;
     helpText += '`!server list` → Shows the numbered list of servers.\n';
@@ -106,7 +106,7 @@ async function handleServerCommands(client, config, message, args) {
             return serverSetCommand(config, message, args.slice(1));
         case 'all':
             return serverAllCommand(config, message, args.slice(1));
-        case 'clear': 
+        case 'clear':
             return serverClearCommand(config, message);
         default:
             return message.channel.send(getServerHelpText(config));
@@ -114,17 +114,17 @@ async function handleServerCommands(client, config, message, args) {
 }
 
 async function serverListCommand(client, config, message) {
-    const guilds = Array.from(client.guilds.cache.values()); 
-    
+    const guilds = Array.from(client.guilds.cache.values());
+
     const isUniversalMode = config.serverAllMode ?? false;
     const mode = isUniversalMode ? 'Universal (ON)' : 'Restricted (OFF)';
     const allowedCount = config.allowedServers ? config.allowedServers.length : 0;
-    
+
     let header = `**🌐 SERVER LIST**\n\n`;
     header += `**Server Mode:** \`${mode}\`\n`;
     header += `**Allowed Servers:** \`${allowedCount}\`\n\n`;
     header += `Use the numbers to **assign** with \`!server set 1, 3, 5\`.\n\n`;
-    
+
     const guildList = guilds.map((guild, index) =>
         `**[${index + 1}]** ${guild.name}`
     ).join('\n');
@@ -132,13 +132,13 @@ async function serverListCommand(client, config, message) {
     const footer = `\nTotal Servers: ${guilds.length}`;
 
     const fullMessage = header + guildList + footer;
-    
+
     await sendLongMessage(message.channel, fullMessage);
 }
 
 async function serverSetCommand(config, message, args) {
     if (args.length === 0) {
-        return message.reply("❌ **ERROR:** You must specify server numbers.\n\n" + getServerHelpText(config)); 
+        return message.reply("❌ **ERROR:** You must specify server numbers.\n\n" + getServerHelpText(config));
     }
 
     const guilds = Array.from(message.client.guilds.cache.values());
@@ -151,20 +151,20 @@ async function serverSetCommand(config, message, args) {
     if (indices.length === 0) {
         return message.reply("❌ Invalid numbers. You must use the numbers from the list (`!server list`) separated by commas. Example: `1, 3, 5`.");
     }
-    
+
     const newServerIds = indices.map(index => guilds[index - 1].id);
     const newServerNames = indices.map(index => guilds[index - 1].name);
 
     const existingServerIds = new Set(config.allowedServers || []);
-    newServerIds.forEach(id => existingServerIds.add(id)); 
+    newServerIds.forEach(id => existingServerIds.add(id));
 
     config.allowedServers = Array.from(existingServerIds);
-    config.serverAllMode = false; 
-    
-    saveConfig(config); 
+    config.serverAllMode = false;
+
+    saveConfig(config);
 
     const namesList = newServerNames.map(g => `\`${g}\``).join(', ');
-    
+
     await message.channel.send(
         `✅ **Servers added/assigned** for catching (Restricted Mode).\n` +
         `Servers added: ${namesList}\n` +
@@ -174,24 +174,24 @@ async function serverSetCommand(config, message, args) {
 
 async function serverClearCommand(config, message) {
     config.allowedServers = [];
-    config.serverAllMode = false; 
-    saveConfig(config); 
-    await message.channel.send("🧹 **Allowed Servers List Cleared**. The designated server catch list is now empty. Server Mode: **Restricted (OFF)**.");
+    config.serverAllMode = false;
+    saveConfig(config);
+    await message.channel.send("🧹 **Allowed Servers List Cleared**. The designated server catch lis t is now empty. Server Mode: **Restricted (OFF)**.");
 }
 
 
 async function serverAllCommand(config, message, args) {
     const mode = args[0] ? args[0].toLowerCase() : '';
-    
+
     const currentMode = config.serverAllMode ?? false;
 
     if (mode === 'on') {
         config.serverAllMode = true;
-        saveConfig(config); 
+        saveConfig(config);
         await message.channel.send("✅ **Universal Server Mode Activated**. The bot will catch on **ALL** servers.");
     } else if (mode === 'off') {
         config.serverAllMode = false;
-        saveConfig(config); 
+        saveConfig(config);
         const serverCount = config.allowedServers ? config.allowedServers.length : 0;
         await message.channel.send(
             `❌ **Restricted Server Mode Activated**.\n` +
@@ -204,19 +204,19 @@ async function serverAllCommand(config, message, args) {
 
 async function catchAllCommand(config, message, args) {
     const mode = args[0] ? args[0].toLowerCase() : '';
-    
+
     const currentMode = config.catchAll ?? false;
 
     if (mode === 'on') {
         config.catchAll = true;
-        globalState.catchAll = true; 
-        saveConfig(config); 
+        globalState.catchAll = true;
+        saveConfig(config);
         await message.channel.send("✅ **Universal Pokémon Mode Activated**. The bot will catch **ALL** Pokémon that appear (list ignored).");
     } else if (mode === 'off') {
         config.catchAll = false;
         globalState.catchAll = false;
-        saveConfig(config); 
-        
+        saveConfig(config);
+
         let localPokemonList = [];
         try {
             // Recargar la lista, aunque pokemonList debería estar sincronizado
@@ -225,7 +225,7 @@ async function catchAllCommand(config, message, args) {
             console.error("Error reading pokemonListPath:", e);
         }
         const listCount = localPokemonList.length;
-        
+
         await message.channel.send(
             `❌ **Restricted Pokémon Mode Activated**.\n` +
             `The bot will only catch the **${listCount}** Pokémon on your list.`
@@ -247,16 +247,16 @@ async function factoryReset(message) {
             // CREDENCIALES
             "TOKEN": "YOU_TOKEN_HERE",       // <-- RESTABLECIDO
             "OwnerIDs": ["YOU_ID_HERE"],     // <-- RESTABLECIDO
-            
+
             // CANALES Y MODOS
             "errorChannel": "",
             "spamChannel": "",
             "logChannel": "",
-            "serverAllMode": true, 
+            "serverAllMode": true,
             "allowedServers": [],
-            "catchAll": true,       
-            "spamming": false,      
-            "paused": false         
+            "catchAll": true,
+            "spamming": false,
+            "paused": false
         };
 
         // 3. Crear el nuevo objeto de configuración combinando los valores preservados y los reseteados
@@ -264,10 +264,10 @@ async function factoryReset(message) {
             // Preservar valores constantes/esenciales
             "POKETWO_ID": currentConfig.POKETWO_ID || "716390085896962058", // Preservar o usar default de Pokétwo
             "nameBots": currentConfig.nameBots || [], // <-- PRESERVADO
-            
+
             // Preservar el bloque settings completo
             "settings": currentConfig.settings, // <-- PRESERVADO
-            
+
             // Aplicar los valores de restablecimiento
             "TOKEN": resetValues.TOKEN,
             "OwnerIDs": resetValues.OwnerIDs,
@@ -280,17 +280,17 @@ async function factoryReset(message) {
             "spamming": resetValues.spamming,
             "paused": resetValues.paused
         };
-        
+
         fs.writeFileSync(configPath, JSON.stringify(finalResetConfig, null, 2));
 
         // NO se toca pokemon_list.json (Tu lista de Pokémon se mantiene)
-        
+
         // 4. Informar y detener el bot
         // **TEXTO DE RESPUESTA MODIFICADO AQUÍ**
         await message.reply("⚠️ **❗ FACTORY CONFIG RESET COMPLETE!**\nTOKEN and OwnerIDs have been reset.\nThe bot is shutting down.\nPlease restart the program using \\`node index.js\\` to configure your new TOKEN and OwnerIDs.");
         console.log("[CRITICAL] Bot is shutting down due to !reset command.");
         process.exit(0); // Detener el proceso
-        
+
     } catch (e) {
         await message.reply(`❌ **ERROR al realizar el RESET de fábrica:** ${e.message}`);
         console.error("Error during factory reset:", e);
@@ -306,15 +306,15 @@ async function handleCommand(message, prefix) {
     const command = args.shift().toLowerCase();
 
     switch (command) {
-        case 'server': 
+        case 'server':
             return handleServerCommands(client, config, message, args);
-        
+
         case 'catchall':
             return catchAllCommand(config, message, args);
 
-        case 'reset': 
+        case 'reset':
             return factoryReset(message); // Llamar a la función de reset de fábrica
-        
+
         case 'error': {
             if (!args.length) {
                 const channelInfo = config.errorChannel ? `<#${config.errorChannel}>` : 'Not configured';
@@ -338,7 +338,7 @@ async function handleCommand(message, prefix) {
         }
         case 'add': {
             if (!args.length) return message.reply('❌ You must specify a Pokémon name to add.\n\n' + getListHelpText(config));
-            
+
             const inputString = args.join(' ');
             const namesToAdd = inputString
                 .split(',')
@@ -426,11 +426,11 @@ async function handleCommand(message, prefix) {
                 return message.reply('❌ No valid Pokémon names were provided for removal.');
             }
         }
-        case 'list': 
+        case 'list':
             if (args[0] && args[0].toLowerCase() === 'clear') {
-                pokemonList.length = 0; 
+                pokemonList.length = 0;
                 fs.writeFileSync(pokemonListPath, JSON.stringify(pokemonList, null, 2));
-                return message.reply(`🧹 **Pokémon List Cleared**. Total: **${pokemonList.length}**.`);
+                return message.reply(`🧹 **Pokémon List Cleared**. Total: **${pokemonList.length}**. `);
             } else if (args.length) {
                 const page = parseInt(args[0]);
                 // If it's a page number, proceed to show the list, otherwise, show help.
@@ -496,18 +496,16 @@ async function handleCommand(message, prefix) {
             break;
         }
         case 'resume': {
-            const wasPaused = config.paused;
-            
-            if (!wasPaused) {
-                // Nueva respuesta si no estaba pausado
+            // 💡 CORRECCIÓN CLAVE: Usar globalState.paused para la comprobación real
+            if (!globalState.paused) {
                 return message.reply('ℹ️ **El sistema ya estaba activo (No Pausado).** No se necesita reanudar.');
             }
-            
+
             // Si sí estaba pausado, proceder a reanudar
             config.paused = false;
             globalState.paused = false;
             saveConfig(config);
-            
+
             // Verificar si el canal de logs está configurado para evitar el 404
             if (!config.logChannel) {
                 return message.reply('✅ Sistema reanudado. **Advertencia:** El canal de log no está configurado, no se pudo reanudar el incienso. Use `!log #channel` para configurarlo.');
@@ -660,11 +658,11 @@ async function handleCommand(message, prefix) {
                 "`!server list` → Shows list of guilds with numbers.",
                 "`!server set 1, 5` → **ADDS** guilds for capture (Current Server Mode: " + (currentServerMode ? 'Universal' : 'Restricted') + ")",
                 "`!server all on/off` → Activates/Deactivates universal capture (Current: " + (currentServerMode ? 'ON' : 'OFF') + ")",
-                "`!server clear` → Clears the list of assigned servers.", 
+                "`!server clear` → Clears the list of assigned servers.",
                 "",
                 "📋 **LIST MANAGEMENT**",
                 "`!list` → Shows list (25/pg)",
-                "`!list clear` → Clears the Pokémon list.", 
+                "`!list clear` → Clears the Pokémon list.",
                 "`!next`/`!back` → Navigates pages",
                 "`!next 3`/`!back 2` → Jumps to page X",
                 "",
@@ -699,11 +697,11 @@ async function handleCommand(message, prefix) {
                 "• `!next 3` → Jumps to page 3",
                 "• `!c @poketwo pf old` → shows the profile ",
                 "• `!spam #general` → Spam in #general",
-                "• `!server all off` → Activates Restricted Server Mode", 
-                "• `!server list` → Shows server list", 
-                "• `!server set 1, 5` → **ADDS** the 1st and 5th server for catching.", 
-                "• `!server clear` → Clears the list of assigned servers.", 
-                "• `!list clear` → Clears the Pokémon list.", 
+                "• `!server all off` → Activates Restricted Server Mode",
+                "• `!server list` → Shows server list",
+                "• `!server set 1, 5` → **ADDS** the 1st and 5th server for catching.",
+                "• `!server clear` → Clears the list of assigned servers.",
+                "• `!list clear` → Clears the Pokémon list.",
                 "• `!click Accept` → Directly clicks the most recent 'Accept' button from Pokétwo",
                 "• `!click 1` → Clicks the first button (left) of the most recent Pokétwo message",
                 "• `!click` → Shows the list of available buttons to choose from",
