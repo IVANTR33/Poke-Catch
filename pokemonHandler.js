@@ -306,7 +306,7 @@ async function handlePokemonMessage(message) {
                     console.log(`[${channelId}] ✅ 'Confirm' button for pausing incense pressed.`);
                     console.log(`=====================================================`);
                 }
-            }, 1500); 
+            }, 10000); 
         } catch (e) {
             console.error(`[${channelId}] ❌ Could not send command to pause incenses. Error: ${e.message}`);
             console.log(`=====================================================`);
