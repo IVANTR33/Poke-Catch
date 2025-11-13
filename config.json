@@ -7,10 +7,10 @@
   ],
   "settings": {
     "maxAttempts": 2,
-    "reactionTime": 2200,
+    "reactionTime": 1500,
     "channelTimeout": 35000,
     "itemsPerPage": 15,
-    "nameWaitTime": 10000,
+    "nameWaitTime": 5000,
     "spamMinDelay": 1500,
     "spamMaxDelay": 3000
   },
